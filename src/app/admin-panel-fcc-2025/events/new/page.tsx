@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { 
   ArrowLeft, Save, Calendar, Users, 
   Plus, X, Eye, Settings, FileText, Image as ImageIcon,
-  ChevronLeft, ChevronRight, AlertCircle, CheckCircle,
-  BookOpen, Tag
+  AlertCircle, CheckCircle, BookOpen, Tag, Clock
 } from 'lucide-react';
 import Link from 'next/link';
+import DateTimePicker from '@/components/DateTimePicker';
 
 interface EventFormData {
   title: string;
@@ -15,6 +15,7 @@ interface EventFormData {
   fullDescription: string;
   category: string;
   date: string;
+  endDate: string;
   startTime: string;
   endTime: string;
   location: string;
@@ -43,23 +44,15 @@ interface EventFormData {
   certificateTemplate: string;
 }
 
-interface CalendarDay {
-  date: Date;
-  isCurrentMonth: boolean;
-  events: number;
-  isSelected: boolean;
-}
-
 export default function NewEventPage() {
   const [currentStep, setCurrentStep] = useState(1);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [currentCalendarDate, setCurrentCalendarDate] = useState(new Date());
   const [formData, setFormData] = useState<EventFormData>({
     title: '',
     description: '',
     fullDescription: '',
     category: 'meeting',
     date: '',
+    endDate: '',
     startTime: '09:00',
     endTime: '17:00',
     location: '',
@@ -91,6 +84,41 @@ export default function NewEventPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
   const [previewMode, setPreviewMode] = useState(false);
+  const [showDateTimePicker, setShowDateTimePicker] = useState(false);
+
+  // Real-time validation for registration deadline
+  useEffect(() => {
+    if (formData.registrationDeadline && formData.date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const regDeadline = new Date(formData.registrationDeadline);
+      const startDate = new Date(formData.date);
+      regDeadline.setHours(0, 0, 0, 0);
+      startDate.setHours(0, 0, 0, 0);
+      
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        
+        if (regDeadline >= startDate) {
+          newErrors.registrationDeadline = 'Registration deadline must be before event start date';
+        } else if (regDeadline < today) {
+          newErrors.registrationDeadline = 'Registration deadline cannot be in the past';
+        } else {
+          delete newErrors.registrationDeadline;
+        }
+        
+        return newErrors;
+      });
+    } else if (formData.registrationDeadline === '') {
+      // Clear error when field is empty (since it's optional)
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors.registrationDeadline;
+        return newErrors;
+      });
+    }
+  }, [formData.registrationDeadline, formData.date]);
 
   // Create refs for required fields
   const titleRef = useRef<HTMLInputElement>(null);
@@ -135,72 +163,15 @@ export default function NewEventPage() {
     { value: 'community', label: 'Community Building', color: 'bg-teal-500' }
   ];
 
-  // Calendar functions
-  const getDaysInMonth = (date: Date): CalendarDay[] => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-    
-    const days: CalendarDay[] = [];
-    
-    // Previous month days
-    const prevMonth = new Date(year, month - 1, 0);
-    for (let i = startingDayOfWeek - 1; i >= 0; i--) {
-      const day = prevMonth.getDate() - i;
-      days.push({
-        date: new Date(year, month - 1, day),
-        isCurrentMonth: false,
-        events: 0,
-        isSelected: false
-      });
-    }
-    
-    // Current month days
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayDate = new Date(year, month, day);
-      days.push({
-        date: dayDate,
-        isCurrentMonth: true,
-        events: Math.floor(Math.random() * 3), // Mock events count
-        isSelected: dayDate.toDateString() === (formData.date ? new Date(formData.date).toDateString() : '')
-      });
-    }
-    
-    // Next month days
-    const remainingSlots = 42 - days.length;
-    for (let day = 1; day <= remainingSlots; day++) {
-      days.push({
-        date: new Date(year, month + 1, day),
-        isCurrentMonth: false,
-        events: 0,
-        isSelected: false
-      });
-    }
-    
-    return days;
-  };
-
-  const selectDate = (date: Date) => {
+  // DateTimePicker handler
+  const handleDateTimeSelect = (startDate: string, endDate: string, startTime: string, endTime: string) => {
     setFormData(prev => ({
       ...prev,
-      date: date.toISOString().split('T')[0]
+      date: startDate,
+      endDate: endDate,
+      startTime,
+      endTime
     }));
-    setShowCalendar(false);
-  };
-
-  const navigateCalendar = (direction: 'prev' | 'next') => {
-    setCurrentCalendarDate(prev => {
-      const newDate = new Date(prev);
-      if (direction === 'prev') {
-        newDate.setMonth(prev.getMonth() - 1);
-      } else {
-        newDate.setMonth(prev.getMonth() + 1);
-      }
-      return newDate;
-    });
   };
 
   // Form validation
@@ -214,12 +185,54 @@ export default function NewEventPage() {
         if (!formData.category) newErrors.category = 'Category is required';
         break;
       case 2:
-        if (!formData.date) newErrors.date = 'Date is required';
+        if (!formData.date) newErrors.date = 'Start date is required';
+        if (!formData.endDate) newErrors.endDate = 'End date is required';
         if (!formData.startTime) newErrors.startTime = 'Start time is required';
         if (!formData.endTime) newErrors.endTime = 'End time is required';
         if (!formData.location.trim()) newErrors.location = 'Location is required';
-        if (formData.startTime >= formData.endTime) {
-          newErrors.endTime = 'End time must be after start time';
+        
+        // Validate dates are in the future
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        if (formData.date) {
+          const startDate = new Date(formData.date);
+          startDate.setHours(0, 0, 0, 0);
+          if (startDate < today) {
+            newErrors.date = 'Event start date must be today or in the future';
+          }
+        }
+        
+        if (formData.date && formData.endDate) {
+          const startDate = new Date(formData.date);
+          const endDate = new Date(formData.endDate);
+          startDate.setHours(0, 0, 0, 0);
+          endDate.setHours(0, 0, 0, 0);
+          
+          if (endDate < startDate) {
+            newErrors.endDate = 'End date must be after or equal to start date';
+          }
+          
+          // For same-day events, validate times
+          if (startDate.getTime() === endDate.getTime() && formData.startTime >= formData.endTime) {
+            newErrors.endTime = 'End time must be after start time for same-day events';
+          }
+        }
+        
+        // Validate registration deadline
+        if (formData.registrationDeadline && formData.date) {
+          const regDeadline = new Date(formData.registrationDeadline);
+          const startDate = new Date(formData.date);
+          regDeadline.setHours(0, 0, 0, 0);
+          startDate.setHours(0, 0, 0, 0);
+          
+          if (regDeadline >= startDate) {
+            newErrors.registrationDeadline = 'Registration deadline must be before event start date';
+          }
+          
+          if (regDeadline < today) {
+            newErrors.registrationDeadline = 'Registration deadline cannot be in the past';
+          }
         }
         break;
       case 3:
@@ -350,7 +363,8 @@ export default function NewEventPage() {
     if (!formData.title.trim()) allErrors.title = 'Title is required';
     if (!formData.description.trim()) allErrors.description = 'Description is required';
     if (!formData.category) allErrors.category = 'Category is required';
-    if (!formData.date) allErrors.date = 'Date is required';
+    if (!formData.date) allErrors.date = 'Start date is required';
+    if (!formData.endDate) allErrors.endDate = 'End date is required';
     if (!formData.startTime) allErrors.startTime = 'Start time is required';
     if (!formData.endTime) allErrors.endTime = 'End time is required';
     if (!formData.location.trim()) allErrors.location = 'Location is required';
@@ -419,7 +433,8 @@ export default function NewEventPage() {
 
     // Required fields validation
     if (!formData.title.trim()) newErrors.title = 'Title is required';
-    if (!formData.date) newErrors.date = 'Date is required';
+    if (!formData.date) newErrors.date = 'Start date is required';
+    if (!formData.endDate) newErrors.endDate = 'End date is required';
     if (!formData.startTime) newErrors.startTime = 'Start time is required';
     if (!formData.endTime) newErrors.endTime = 'End time is required';
     if (!formData.location.trim()) newErrors.location = 'Location is required';
@@ -427,11 +442,52 @@ export default function NewEventPage() {
     // Additional validations
     if (!formData.description.trim()) newErrors.description = 'Description is required';
     if (!formData.category) newErrors.category = 'Category is required';
-    if (formData.startTime >= formData.endTime) {
-      newErrors.endTime = 'End time must be after start time';
-    }
     if (formData.maxAttendees < 1) newErrors.maxAttendees = 'Must allow at least 1 attendee';
     if (!formData.contact.trim()) newErrors.contact = 'Contact email is required';
+
+    // Date and time validations
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    if (formData.date) {
+      const startDate = new Date(formData.date);
+      startDate.setHours(0, 0, 0, 0);
+      if (startDate < today) {
+        newErrors.date = 'Event start date must be today or in the future';
+      }
+    }
+    
+    if (formData.date && formData.endDate) {
+      const startDate = new Date(formData.date);
+      const endDate = new Date(formData.endDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      
+      if (endDate < startDate) {
+        newErrors.endDate = 'End date must be after or equal to start date';
+      }
+      
+      // For same-day events, validate times
+      if (startDate.getTime() === endDate.getTime() && formData.startTime >= formData.endTime) {
+        newErrors.endTime = 'End time must be after start time for same-day events';
+      }
+    }
+    
+    // Validate registration deadline
+    if (formData.registrationDeadline && formData.date) {
+      const regDeadline = new Date(formData.registrationDeadline);
+      const startDate = new Date(formData.date);
+      regDeadline.setHours(0, 0, 0, 0);
+      startDate.setHours(0, 0, 0, 0);
+      
+      if (regDeadline >= startDate) {
+        newErrors.registrationDeadline = 'Registration deadline must be before event start date';
+      }
+      
+      if (regDeadline < today) {
+        newErrors.registrationDeadline = 'Registration deadline cannot be in the past';
+      }
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -461,13 +517,6 @@ export default function NewEventPage() {
       setIsSaving(false);
     }
   };
-
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -523,7 +572,8 @@ export default function NewEventPage() {
                     { field: 'title', label: 'Event Title', filled: formData.title.trim() },
                     { field: 'description', label: 'Description', filled: formData.description.trim() },
                     { field: 'category', label: 'Category', filled: formData.category },
-                    { field: 'date', label: 'Date', filled: formData.date },
+                    { field: 'date', label: 'Start Date', filled: formData.date },
+                    { field: 'endDate', label: 'End Date', filled: formData.endDate },
                     { field: 'startTime', label: 'Start Time', filled: formData.startTime },
                     { field: 'endTime', label: 'End Time', filled: formData.endTime },
                     { field: 'location', label: 'Location', filled: formData.location.trim() },
@@ -542,8 +592,8 @@ export default function NewEventPage() {
                 <div className="mt-3 pt-3 border-t">
                   <div className="text-xs text-gray-600">
                     {[formData.title.trim(), formData.description.trim(), formData.category, formData.date, 
-                      formData.startTime, formData.endTime, formData.location.trim(), formData.contact.trim()
-                    ].filter(Boolean).length} of 8 required fields completed
+                      formData.endDate, formData.startTime, formData.endTime, formData.location.trim(), formData.contact.trim()
+                    ].filter(Boolean).length} of 9 required fields completed
                   </div>
                 </div>
               </div>
@@ -562,7 +612,7 @@ export default function NewEventPage() {
                       hasErrors = !formData.title.trim() || !formData.description.trim() || !formData.category;
                       break;
                     case 2:
-                      hasErrors = !formData.date || !formData.startTime || !formData.endTime || !formData.location.trim();
+                      hasErrors = !formData.date || !formData.endDate || !formData.startTime || !formData.endTime || !formData.location.trim();
                       break;
                     case 3:
                       hasErrors = formData.maxAttendees < 1 || !formData.contact.trim();
@@ -574,7 +624,7 @@ export default function NewEventPage() {
                     case 6:
                       // Review step - check all required fields
                       hasErrors = !formData.title.trim() || !formData.description.trim() || !formData.category || 
-                                 !formData.date || !formData.startTime || !formData.endTime || !formData.location.trim() || 
+                                 !formData.date || !formData.endDate || !formData.startTime || !formData.endTime || !formData.location.trim() || 
                                  !formData.contact.trim() || formData.maxAttendees < 1;
                       break;
                   }
@@ -758,98 +808,188 @@ export default function NewEventPage() {
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Schedule & Location</h2>
                   
                   <div className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Event Date *
-                        </label>
-                        <div className="relative">
-                          <input
-                            ref={dateRef}
-                            type="text"
-                            value={formData.date ? new Date(formData.date).toLocaleDateString() : ''}
-                            onClick={() => setShowCalendar(true)}
-                            readOnly
-                            className={`w-full p-3 border rounded-lg cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                              errors.date ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                            }`}
-                            placeholder="Select date..."
-                          />
-                          <Calendar className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                    {/* Date & Time Picker */}
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Event Dates & Times *
+                      </label>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-3">
+                          <label className="text-xs font-medium text-gray-600 uppercase tracking-wide">Start Date & Time</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="relative">
+                              <input
+                                ref={dateRef}
+                                type="text"
+                                value={formData.date ? new Date(formData.date).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric'
+                                }) : ''}
+                                onClick={() => setShowDateTimePicker(true)}
+                                readOnly
+                                className={`w-full p-3 border rounded-lg cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                                  errors.date ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                                }`}
+                                placeholder="Start date..."
+                              />
+                              <Calendar className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                            </div>
+                            <div className="relative">
+                              <input
+                                ref={startTimeRef}
+                                type="text"
+                                value={formData.startTime ? new Date(`2000-01-01T${formData.startTime}`).toLocaleTimeString([], {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                  hour12: true
+                                }) : ''}
+                                onClick={() => setShowDateTimePicker(true)}
+                                readOnly
+                                className={`w-full p-3 border rounded-lg cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                                  errors.startTime ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                                }`}
+                                placeholder="Start time"
+                              />
+                              <Clock className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                            </div>
+                          </div>
                         </div>
+                        
+                        <div className="space-y-3">
+                          <label className="text-xs font-medium text-gray-600 uppercase tracking-wide">End Date & Time</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <div className="relative">
+                              <input
+                                type="text"
+                                value={formData.endDate ? new Date(formData.endDate).toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  year: 'numeric'
+                                }) : ''}
+                                onClick={() => setShowDateTimePicker(true)}
+                                readOnly
+                                className={`w-full p-3 border rounded-lg cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                                  errors.endDate ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                                }`}
+                                placeholder="End date..."
+                              />
+                              <Calendar className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                            </div>
+                            <div className="relative">
+                              <input
+                                ref={endTimeRef}
+                                type="text"
+                                value={formData.endTime ? new Date(`2000-01-01T${formData.endTime}`).toLocaleTimeString([], {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                  hour12: true
+                                }) : ''}
+                                onClick={() => setShowDateTimePicker(true)}
+                                readOnly
+                                className={`w-full p-3 border rounded-lg cursor-pointer focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
+                                  errors.endTime ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                                }`}
+                                placeholder="End time"
+                              />
+                              <Clock className="absolute right-3 top-3 h-5 w-5 text-gray-400" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Error messages */}
+                      <div className="mt-2 space-y-1">
                         {errors.date && (
-                          <p className="mt-1 text-sm text-red-600 flex items-center">
+                          <p className="text-sm text-red-600 flex items-center">
                             <AlertCircle className="h-4 w-4 mr-1" />
                             {errors.date}
                           </p>
                         )}
-
-                        {/* Calendar Modal */}
-                        {showCalendar && (
-                          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                            <div className="bg-white rounded-lg p-6 w-96 max-h-[90vh] overflow-y-auto">
-                              <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-lg font-semibold">Select Date</h3>
-                                <button
-                                  onClick={() => setShowCalendar(false)}
-                                  className="text-gray-400 hover:text-gray-600"
-                                >
-                                  <X className="h-5 w-5" />
-                                </button>
-                              </div>
-
-                              <div className="flex items-center justify-between mb-4">
-                                <button
-                                  onClick={() => navigateCalendar('prev')}
-                                  className="p-2 hover:bg-gray-100 rounded-lg"
-                                >
-                                  <ChevronLeft className="h-5 w-5" />
-                                </button>
-                                <h4 className="text-lg font-semibold">
-                                  {monthNames[currentCalendarDate.getMonth()]} {currentCalendarDate.getFullYear()}
-                                </h4>
-                                <button
-                                  onClick={() => navigateCalendar('next')}
-                                  className="p-2 hover:bg-gray-100 rounded-lg"
-                                >
-                                  <ChevronRight className="h-5 w-5" />
-                                </button>
-                              </div>
-
-                              <div className="grid grid-cols-7 gap-1 mb-2">
-                                {dayNames.map(day => (
-                                  <div key={day} className="p-2 text-center text-sm font-medium text-gray-500">
-                                    {day}
-                                  </div>
-                                ))}
-                              </div>
-
-                              <div className="grid grid-cols-7 gap-1">
-                                {getDaysInMonth(currentCalendarDate).map((day, index) => (
-                                  <button
-                                    key={index}
-                                    onClick={() => day.isCurrentMonth && selectDate(day.date)}
-                                    disabled={!day.isCurrentMonth}
-                                    className={`p-2 text-sm rounded-lg transition-colors ${
-                                      day.isSelected
-                                        ? 'bg-blue-500 text-white'
-                                        : day.isCurrentMonth
-                                        ? 'hover:bg-gray-100 text-gray-900'
-                                        : 'text-gray-400 cursor-not-allowed'
-                                    } ${day.events > 0 && day.isCurrentMonth ? 'font-semibold' : ''}`}
-                                  >
-                                    {day.date.getDate()}
-                                    {day.events > 0 && day.isCurrentMonth && (
-                                      <div className="w-1 h-1 bg-red-500 rounded-full mx-auto mt-1"></div>
-                                    )}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          </div>
+                        {errors.endDate && (
+                          <p className="text-sm text-red-600 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" />
+                            {errors.endDate}
+                          </p>
+                        )}
+                        {errors.startTime && (
+                          <p className="text-sm text-red-600 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" />
+                            {errors.startTime}
+                          </p>
+                        )}
+                        {errors.endTime && (
+                          <p className="text-sm text-red-600 flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" />
+                            {errors.endTime}
+                          </p>
                         )}
                       </div>
 
+                      {/* Event schedule display */}
+                      {formData.date && formData.endDate && formData.startTime && formData.endTime && !errors.endTime && !errors.endDate && (
+                        <div className="mt-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                          <div className="flex items-start">
+                            <Calendar className="h-5 w-5 text-blue-600 mr-2 mt-0.5" />
+                            <div>
+                              <p className="text-sm font-medium text-blue-900 mb-1">Event Schedule</p>
+                              {formData.date === formData.endDate ? (
+                                <p className="text-sm text-blue-800">
+                                  <strong>Single Day Event:</strong> {new Date(formData.date).toLocaleDateString('en-US', {
+                                    weekday: 'long',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })}<br />
+                                  From {new Date(`2000-01-01T${formData.startTime}`).toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true
+                                  })} to {new Date(`2000-01-01T${formData.endTime}`).toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true
+                                  })} ({(() => {
+                                    const start = new Date(`2000-01-01T${formData.startTime}`);
+                                    const end = new Date(`2000-01-01T${formData.endTime}`);
+                                    const diff = end.getTime() - start.getTime();
+                                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                                    return `${hours}h ${minutes}m`;
+                                  })()})
+                                </p>
+                              ) : (
+                                <p className="text-sm text-blue-800">
+                                  <strong>Multi-Day Event:</strong><br />
+                                  Starts: {new Date(formData.date).toLocaleDateString('en-US', {
+                                    weekday: 'long',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })} at {new Date(`2000-01-01T${formData.startTime}`).toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true
+                                  })}<br />
+                                  Ends: {new Date(formData.endDate).toLocaleDateString('en-US', {
+                                    weekday: 'long',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })} at {new Date(`2000-01-01T${formData.endTime}`).toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true
+                                  })}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Registration Deadline
@@ -858,52 +998,21 @@ export default function NewEventPage() {
                           type="date"
                           value={formData.registrationDeadline}
                           onChange={(e) => setFormData(prev => ({ ...prev, registrationDeadline: e.target.value }))}
-                          className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Start Time *
-                        </label>
-                        <input
-                          ref={startTimeRef}
-                          type="time"
-                          value={formData.startTime}
-                          onChange={(e) => setFormData(prev => ({ ...prev, startTime: e.target.value }))}
+                          min={new Date().toISOString().split('T')[0]}
+                          max={formData.date ? new Date(new Date(formData.date).getTime() - 24 * 60 * 60 * 1000).toISOString().split('T')[0] : undefined}
                           className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                            errors.startTime ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                            errors.registrationDeadline ? 'border-red-500 bg-red-50' : 'border-gray-300'
                           }`}
                         />
-                        {errors.startTime && (
+                        {errors.registrationDeadline && (
                           <p className="mt-1 text-sm text-red-600 flex items-center">
                             <AlertCircle className="h-4 w-4 mr-1" />
-                            {errors.startTime}
+                            {errors.registrationDeadline}
                           </p>
                         )}
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          End Time *
-                        </label>
-                        <input
-                          ref={endTimeRef}
-                          type="time"
-                          value={formData.endTime}
-                          onChange={(e) => setFormData(prev => ({ ...prev, endTime: e.target.value }))}
-                          className={`w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors ${
-                            errors.endTime ? 'border-red-500 bg-red-50' : 'border-gray-300'
-                          }`}
-                        />
-                        {errors.endTime && (
-                          <p className="mt-1 text-sm text-red-600 flex items-center">
-                            <AlertCircle className="h-4 w-4 mr-1" />
-                            {errors.endTime}
-                          </p>
-                        )}
+                        <p className="mt-1 text-xs text-gray-500">
+                          Must be before event start date and not in the past
+                        </p>
                       </div>
                     </div>
 
@@ -1601,6 +1710,18 @@ export default function NewEventPage() {
           </div>
         </div>
       </div>
+
+      {/* Date Time Picker Modal */}
+      <DateTimePicker
+        isOpen={showDateTimePicker}
+        onClose={() => setShowDateTimePicker(false)}
+        onDateTimeSelect={handleDateTimeSelect}
+        initialStartDate={formData.date}
+        initialEndDate={formData.endDate}
+        initialStartTime={formData.startTime}
+        initialEndTime={formData.endTime}
+        title="Select Event Dates & Times"
+      />
     </div>
   );
 }
