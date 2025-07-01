@@ -17,6 +17,8 @@ export default function EventsManagement() {
         return 'bg-yellow-100 text-yellow-800';
       case 'skills':
         return 'bg-pink-100 text-pink-800';
+      case 'conference':
+        return 'bg-indigo-100 text-indigo-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -84,6 +86,7 @@ export default function EventsManagement() {
                 <option value="educational">Educational</option>
                 <option value="training">Training</option>
                 <option value="skills">Skills</option>
+                <option value="conference">Conference</option>
               </select>
               <select className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                 <option value="">All Status</option>
