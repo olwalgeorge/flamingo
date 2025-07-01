@@ -2,12 +2,37 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Menu, X, Heart } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const isActive = (path: string) => {
+    if (path === '/') {
+      return pathname === '/';
+    }
+    return pathname.startsWith(path);
+  };
+
+  const navLinkClasses = (path: string) => {
+    const baseClasses = "transition-all duration-300 font-medium relative";
+    const activeClasses = "text-emerald-600 border-b-2 border-emerald-600";
+    const inactiveClasses = "text-gray-700 hover:text-emerald-600 hover:border-b-2 hover:border-emerald-300";
+    
+    return `${baseClasses} ${isActive(path) ? activeClasses : inactiveClasses}`;
+  };
+
+  const mobileNavLinkClasses = (path: string) => {
+    const baseClasses = "block px-3 py-2 transition-all duration-300 font-medium rounded-lg";
+    const activeClasses = "text-emerald-600 bg-emerald-50 border-l-4 border-emerald-600";
+    const inactiveClasses = "text-gray-700 hover:text-emerald-600 hover:bg-emerald-50";
+    
+    return `${baseClasses} ${isActive(path) ? activeClasses : inactiveClasses}`;
+  };
 
   return (
     <header className="bg-white shadow-lg sticky top-0 z-50">
@@ -26,25 +51,25 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <Link href="/" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/" className={navLinkClasses('/')}>
               Home
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/about" className={navLinkClasses('/about')}>
               About
             </Link>
-            <Link href="/events" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/events" className={navLinkClasses('/events')}>
               Events
             </Link>
-            <Link href="/members" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/members" className={navLinkClasses('/members')}>
               Members
             </Link>
-            <Link href="/volunteer" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/volunteer" className={navLinkClasses('/volunteer')}>
               Volunteer
             </Link>
-            <Link href="/news" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/news" className={navLinkClasses('/news')}>
               News
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link href="/contact" className={navLinkClasses('/contact')}>
               Contact
             </Link>
           </nav>
@@ -53,7 +78,11 @@ export default function Header() {
           <div className="hidden md:flex items-center space-x-4">
             <Link 
               href="/donate" 
-              className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
+              className={`px-6 py-2 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg font-medium ${
+                isActive('/donate') 
+                  ? 'bg-gradient-to-r from-emerald-700 to-green-700 text-white' 
+                  : 'bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-700 hover:to-green-700'
+              }`}
             >
               Support Us
             </Link>
@@ -74,55 +103,59 @@ export default function Header() {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
               <Link 
                 href="/" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                className={mobileNavLinkClasses('/')}
                 onClick={toggleMenu}
               >
                 Home
               </Link>
               <Link 
                 href="/about" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                className={mobileNavLinkClasses('/about')}
                 onClick={toggleMenu}
               >
                 About
               </Link>
               <Link 
                 href="/events" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                className={mobileNavLinkClasses('/events')}
                 onClick={toggleMenu}
               >
                 Events
               </Link>
               <Link 
                 href="/members" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                className={mobileNavLinkClasses('/members')}
                 onClick={toggleMenu}
               >
                 Members
               </Link>
               <Link 
                 href="/volunteer" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                className={mobileNavLinkClasses('/volunteer')}
                 onClick={toggleMenu}
               >
                 Volunteer
               </Link>
               <Link 
                 href="/news" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                className={mobileNavLinkClasses('/news')}
                 onClick={toggleMenu}
               >
                 News
               </Link>
               <Link 
                 href="/contact" 
-                className="block px-3 py-2 text-gray-700 hover:text-blue-600 transition-colors"
+                className={mobileNavLinkClasses('/contact')}
                 onClick={toggleMenu}
               >
                 Contact
               </Link>            <Link 
               href="/donate" 
-              className="block mx-3 my-2 text-center bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200"
+              className={`block mx-3 my-2 text-center px-6 py-2 rounded-lg transition-all duration-300 font-medium ${
+                isActive('/donate') 
+                  ? 'bg-gradient-to-r from-emerald-700 to-green-700 text-white' 
+                  : 'bg-gradient-to-r from-emerald-600 to-green-600 text-white hover:from-emerald-700 hover:to-green-700'
+              }`}
               onClick={toggleMenu}
             >
               Support Us

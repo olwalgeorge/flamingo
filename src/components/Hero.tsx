@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Hero: React.FC = () => {
   return (
@@ -14,8 +15,8 @@ const Hero: React.FC = () => {
       {/* Main background image */}
       <div className="absolute inset-0 opacity-40">
         <Image
-          src="https://images.pexels.com/photos/2802809/pexels-photo-2802809.jpeg"
-          alt="African Community Gathering"
+          src="https://images.pexels.com/photos/17916511/pexels-photo-17916511.jpeg"
+          alt="African Environmental Engagement - Man in Abuja Holding Tree Saplings for Community Planting"
           fill
           style={{ objectFit: 'cover' }}
           className="brightness-75 contrast-110"
@@ -33,40 +34,51 @@ const Hero: React.FC = () => {
         </div>
         
         <h1 className="text-6xl md:text-8xl font-bold mb-8 drop-shadow-2xl leading-tight">
-          <span className="block text-white">Protecting Our</span>
+          <span className="block text-white">Nurturing Africa&apos;s</span>
           <span className="block bg-gradient-to-r from-emerald-300 via-green-200 to-teal-200 bg-clip-text text-transparent">
-            Planet Together
+            Green Future
           </span>
         </h1>
         
         <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed drop-shadow-lg text-green-50">
-          FLAMINGO CHAP CHAP CBO - Driving sustainable environmental management, 
-          empowering communities, and creating green livelihoods across Kisumu County, Kenya
+          FLAMINGO CHAP CHAP CBO - Empowering African communities in Kisumu County through tree planting, 
+          river conservation, and sustainable environmental practices that preserve our heritage for future generations
         </p>
         
-        <div className="flex flex-col sm:flex-row justify-center gap-6 mt-12">
-          <a
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-12 flex-wrap">
+          <Link
             href="/about"
-            className="group bg-white/95 backdrop-blur-sm text-emerald-800 font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-emerald-500/25 transition-all duration-500 transform hover:scale-105 hover:bg-white border-2 border-emerald-200"
+            className="group bg-white/95 backdrop-blur-sm text-emerald-800 font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-emerald-500/25 transition-all duration-500 transform hover:scale-105 hover:bg-white border-2 border-emerald-200"
           >
             <span className="flex items-center justify-center gap-2">
-              🌿 Our Green Mission
+              🌍 See Our Impact
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </span>
-          </a>
-          <a
+          </Link>
+          <Link
             href="/volunteer"
-            className="group bg-emerald-500/90 backdrop-blur-sm text-white font-bold py-5 px-10 rounded-full shadow-2xl hover:shadow-emerald-400/30 transition-all duration-500 transform hover:scale-105 border-2 border-emerald-300 hover:bg-emerald-400"
+            className="group bg-emerald-500/90 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-emerald-400/30 transition-all duration-500 transform hover:scale-105 border-2 border-emerald-300 hover:bg-emerald-400"
           >
             <span className="flex items-center justify-center gap-2">
-              🤝 Join Our Movement
+              🌳 Join Our Mission
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
             </span>
-          </a>
+          </Link>
+          <Link
+            href="/donate"
+            className="group bg-gradient-to-r from-amber-500 to-orange-500 backdrop-blur-sm text-white font-bold py-4 px-8 rounded-full shadow-2xl hover:shadow-amber-400/30 transition-all duration-500 transform hover:scale-105 border-2 border-amber-300 hover:from-amber-400 hover:to-orange-400"
+          >
+            <span className="flex items-center justify-center gap-2">
+              💚 Support Us
+              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </span>
+          </Link>
         </div>
         
         {/* Environmental stats */}
