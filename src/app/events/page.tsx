@@ -23,7 +23,7 @@ export default function Events() {
       <section className="relative bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
         <div className="absolute inset-0">
           <Image 
-            src="/hero-events.svg" 
+            src="/hero-events.jpg" 
             alt="FCC CBO community members engaged in environmental conservation activities - river cleanup and tree planting in Kisumu County" 
             fill
             className="object-cover opacity-90"
