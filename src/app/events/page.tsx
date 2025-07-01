@@ -179,9 +179,12 @@ export default function Events() {
                       <Users className="h-4 w-4 mr-1" />
                       <span className="text-sm">{event.attendees} attending</span>
                     </div>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    <Link 
+                      href={`/events/${event.id}`}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    >
                       Join Event
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
