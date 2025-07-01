@@ -1,5 +1,6 @@
 import { Calendar, MapPin, Clock, Users, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Events() {
   const upcomingEvents = [
@@ -91,8 +92,18 @@ export default function Events() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
+        <div className="absolute inset-0">
+          <Image 
+            src="/hero-events.svg" 
+            alt="FCC CBO community members engaged in environmental conservation activities - river cleanup and tree planting in Kisumu County" 
+            fill
+            className="object-cover opacity-90"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-green-600/40 to-blue-600/40"></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6">
               Events & Activities
@@ -100,7 +111,7 @@ export default function Events() {
             <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-blue-100">
               Join FCC CBO&apos;s environmental conservation activities, community meetings, and empowerment programs 
               in Kisumu County. 
-              create lasting memories, and make a positive impact.
+              Create lasting memories, and make a positive impact.
             </p>
           </div>
         </div>

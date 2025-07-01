@@ -1,42 +1,12 @@
 import Link from 'next/link';
 import { Users, Calendar, Heart, Handshake, ArrowRight, Star } from 'lucide-react';
+import Hero from './Hero';
 
 export default function HomePage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 text-white">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
-          <div className="text-center">
-            <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              Environmental Conservation
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">
-                Community Empowerment
-              </span>
-            </h1>
-            <p className="text-xl lg:text-2xl mb-8 max-w-3xl mx-auto text-blue-100">
-              FLAMINGO CHAP CHAP CBO - Working for environmental management, community empowerment, 
-              and livelihood improvement in Kisumu County, Kenya.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/events" 
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                Explore Events
-              </Link>
-              <Link 
-                href="/volunteer" 
-                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-200"
-              >
-                Start Volunteering
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Hero />
 
       {/* Stats Section */}
       <section className="py-16 bg-gray-50">
@@ -146,14 +116,14 @@ export default function HomePage() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6">
-                &ldquo;CommunityConnect has transformed our neighborhood. The events are amazing and I&apos;ve made so many new friends!&rdquo;
+                &ldquo;FCC CBO has transformed our community! The river cleanup campaigns have made River Kibos so much cleaner, and I&apos;ve learned so much about environmental conservation.&rdquo;
               </p>
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white font-semibold">
-                  SM
+                <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center text-white font-semibold">
+                  AG
                 </div>
                 <div className="ml-4">
-                  <div className="font-semibold text-gray-900">Sarah Martinez</div>
+                  <div className="font-semibold text-gray-900">Akinyi Grace</div>
                   <div className="text-gray-600">Community Member</div>
                 </div>
               </div>
@@ -166,15 +136,15 @@ export default function HomePage() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6">
-                &ldquo;Volunteering through this organization has been incredibly rewarding. They make it easy to get involved and make a difference.&rdquo;
+                &ldquo;Through FCC CBO&apos;s tree planting workshops, I&apos;ve learned sustainable farming techniques that have improved my family&apos;s livelihood. The training programs are excellent!&rdquo;
               </p>
               <div className="flex items-center">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center text-white font-semibold">
-                  DJ
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white font-semibold">
+                  JO
                 </div>
                 <div className="ml-4">
-                  <div className="font-semibold text-gray-900">David Johnson</div>
-                  <div className="text-gray-600">Volunteer Coordinator</div>
+                  <div className="font-semibold text-gray-900">James Ochieng</div>
+                  <div className="text-gray-600">Urban Farmer</div>
                 </div>
               </div>
             </div>
@@ -186,15 +156,15 @@ export default function HomePage() {
                 ))}
               </div>
               <p className="text-gray-600 mb-6">
-                &ldquo;The impact this organization has on our community is incredible. They truly care about making a positive difference.&rdquo;
+                &ldquo;The women&apos;s basket weaving workshops have empowered me to start my own business. FCC CBO truly cares about lifting up our community and protecting our environment.&rdquo;
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white font-semibold">
-                  EW
+                  MW
                 </div>
                 <div className="ml-4">
-                  <div className="font-semibold text-gray-900">Emily Wong</div>
-                  <div className="text-gray-600">Event Organizer</div>
+                  <div className="font-semibold text-gray-900">Mary Wanjiku</div>
+                  <div className="text-gray-600">Women&apos;s Group Leader</div>
                 </div>
               </div>
             </div>
