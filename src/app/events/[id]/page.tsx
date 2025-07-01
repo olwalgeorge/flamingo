@@ -1,6 +1,5 @@
 import { Calendar, MapPin, Clock, Users, ArrowLeft, Share2, Download, CheckCircle, Target, BookOpen } from 'lucide-react';
 import Link from 'next/link';
-import RiverKibosMap from '../../../components/RiverKibosMap';
 import EventMap from '../../../components/EventMap';
 import { getEventById } from '../../../data/events';
 import { getEventMapData } from '../../../data/eventMaps';
@@ -116,7 +115,7 @@ export default async function EventDetails({ params }: PageProps) {
               )}
 
               {/* Interactive Map - Show for all events */}
-              {mapData ? (
+              {mapData && (
                 <div className="mt-12">
                   <h3 className="text-2xl font-bold text-gray-900 mb-6">Event Location Map</h3>
                   <div className="bg-gray-50 rounded-lg p-6">
@@ -129,13 +128,6 @@ export default async function EventDetails({ params }: PageProps) {
                       transportationInfo={mapData.transportationInfo}
                       additionalInfo={mapData.additionalInfo}
                     />
-                  </div>
-                </div>
-              ) : event.id === "1" && (
-                <div className="mt-12">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Event Location & River Kibos Map</h3>
-                  <div className="bg-gray-50 rounded-lg p-6">
-                    <RiverKibosMap />
                   </div>
                 </div>
               )}
