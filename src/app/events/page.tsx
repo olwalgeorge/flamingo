@@ -5,83 +5,85 @@ export default function Events() {
   const upcomingEvents = [
     {
       id: 1,
-      title: "Community Garden Planting Day",
+      title: "River Kibos Clean-up Campaign",
       date: "July 15, 2025",
-      time: "9:00 AM - 12:00 PM",
-      location: "Central Park Community Garden",
-      description: "Join us for a morning of planting and beautifying our community garden. All ages welcome!",
-      category: "volunteer",
-      attendees: 24,
-      maxAttendees: 30,
+      time: "8:00 AM - 12:00 PM",
+      location: "River Kibos Watershed, Kondele Ward",
+      description: "Join us for our monthly river clean-up initiative to protect water sources and preserve aquatic ecosystems.",
+      category: "environmental",
+      attendees: 45,
+      maxAttendees: 60,
       image: "/api/placeholder/400/250"
     },
     {
       id: 2,
-      title: "Annual Summer Festival",
-      date: "July 28, 2025",
-      time: "12:00 PM - 8:00 PM",
-      location: "Downtown Community Center",
-      description: "Our biggest event of the year featuring local vendors, live music, games, and food trucks.",
-      category: "community",
-      attendees: 156,
-      maxAttendees: 200,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 3,
-      title: "Youth Leadership Workshop",
-      date: "August 5, 2025",
+      title: "Quarterly General Meeting - Q3 2025",
+      date: "July 20, 2025",
       time: "2:00 PM - 5:00 PM",
-      location: "Community Center Room A",
-      description: "Empowering young leaders with skills in communication, teamwork, and community engagement.",
-      category: "educational",
-      attendees: 12,
+      location: "FCC CBO Office, Flamingo Unit",
+      description: "Mandatory quarterly meeting for all management committee members to discuss progress and plan future activities.",
+      category: "meeting",
+      attendees: 15,
       maxAttendees: 20,
       image: "/api/placeholder/400/250"
     },
     {
+      id: 3,
+      title: "Tree Planting Workshop",
+      date: "July 28, 2025",
+      time: "9:00 AM - 3:00 PM",
+      location: "Community Center, Kondele Ward",
+      description: "Educational workshop on sustainable tree planting techniques and watershed conservation practices.",
+      category: "educational",
+      attendees: 30,
+      maxAttendees: 40,
+      image: "/api/placeholder/400/250"
+    },
+    {
       id: 4,
-      title: "Food Drive Collection",
-      date: "August 12, 2025",
+      title: "Urban Farming Training",
+      date: "August 5, 2025",
       time: "10:00 AM - 4:00 PM",
-      location: "Various Collection Points",
-      description: "Help us collect non-perishable food items for local families in need.",
-      category: "fundraising",
-      attendees: 45,
+      location: "FCC CBO Training Grounds",
+      description: "Hands-on training for community members on modern urban farming methods and sustainable agriculture.",
+      category: "training",
+      attendees: 25,
+      maxAttendees: 35,
       image: "/api/placeholder/400/250"
     },
     {
       id: 5,
-      title: "Senior Citizens Technology Class",
-      date: "August 19, 2025",
-      time: "3:00 PM - 5:00 PM",
-      location: "Public Library",
-      description: "Free technology classes helping seniors navigate smartphones, tablets, and basic computer skills.",
-      category: "educational",
-      attendees: 8,
-      maxAttendees: 15,
+      title: "Waste Management & Recycling Seminar",
+      date: "August 12, 2025",
+      time: "1:00 PM - 4:00 PM",
+      location: "Kondele Community Hall",
+      description: "Learn about eco-friendly waste management systems and recycling opportunities for community benefit.",
+      category: "environmental",
+      attendees: 40,
+      maxAttendees: 50,
       image: "/api/placeholder/400/250"
     },
     {
       id: 6,
-      title: "Neighborhood Cleanup Day",
-      date: "August 26, 2025",
-      time: "8:00 AM - 11:00 AM",
-      location: "Meet at City Hall",
-      description: "Let&apos;s work together to keep our neighborhoods clean and beautiful. Supplies provided.",
-      category: "volunteer",
-      attendees: 32,
-      maxAttendees: 50,
+      title: "Women's Basket Weaving Workshop",
+      date: "August 19, 2025",
+      time: "2:00 PM - 6:00 PM",
+      location: "FCC CBO Community Center",
+      description: "Empowering women through traditional weaving skills and income-generating activities.",
+      category: "skills",
+      attendees: 20,
+      maxAttendees: 25,
       image: "/api/placeholder/400/250"
     }
   ];
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'community': return 'bg-blue-100 text-blue-800';
-      case 'volunteer': return 'bg-green-100 text-green-800';
+      case 'environmental': return 'bg-green-100 text-green-800';
+      case 'meeting': return 'bg-blue-100 text-blue-800';
       case 'educational': return 'bg-purple-100 text-purple-800';
-      case 'fundraising': return 'bg-orange-100 text-orange-800';
+      case 'training': return 'bg-orange-100 text-orange-800';
+      case 'skills': return 'bg-pink-100 text-pink-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -89,14 +91,15 @@ export default function Events() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-600 text-white py-20">
+      <section className="bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-              Community Events
+              Events & Activities
             </h1>
             <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-blue-100">
-              Join us for exciting events that bring our community together, 
+              Join FCC CBO&apos;s environmental conservation activities, community meetings, and empowerment programs 
+              in Kisumu County. 
               create lasting memories, and make a positive impact.
             </p>
           </div>

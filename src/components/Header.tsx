@@ -15,12 +15,12 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
+            <div className="bg-gradient-to-r from-green-600 to-blue-600 p-2 rounded-lg">
               <Heart className="h-8 w-8 text-white" />
             </div>
             <span className="text-2xl font-bold text-gray-900">
-              Community
-              <span className="text-blue-600">Connect</span>
+              FLAMINGO
+              <span className="text-green-600"> CHAP CHAP</span>
             </span>
           </Link>
 
@@ -53,9 +53,9 @@ export default function Header() {
           <div className="hidden md:flex items-center space-x-4">
             <Link 
               href="/donate" 
-              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg"
+              className="bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
             >
-              Donate Now
+              Support Us
             </Link>
           </div>
 
@@ -120,14 +120,13 @@ export default function Header() {
                 onClick={toggleMenu}
               >
                 Contact
-              </Link>
-              <Link 
-                href="/donate" 
-                className="block mx-3 my-2 text-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-                onClick={toggleMenu}
-              >
-                Donate Now
-              </Link>
+              </Link>            <Link 
+              href="/donate" 
+              className="block mx-3 my-2 text-center bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-2 rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200"
+              onClick={toggleMenu}
+            >
+              Support Us
+            </Link>
             </div>
           </div>
         )}

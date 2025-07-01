@@ -28,15 +28,15 @@ export default function Donate() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-600 text-white py-20">
+      <section className="bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-              Support Our Community
+              Support Our Mission
             </h1>
             <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-blue-100">
-              Your generous donations help us create lasting positive change in our community. 
-              Every contribution, no matter the size, makes a difference.
+              Join us in environmental conservation and community empowerment in Kisumu County. 
+              Your contributions help protect our rivers, preserve watersheds, and empower communities.
             </p>
           </div>
         </div>

@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CommunityConnect - Building Stronger Communities",
-  description: "Join our community organization to make a positive impact through events, volunteering, and connections.",
+  title: "FLAMINGO CHAP CHAP CBO - Environmental Conservation & Community Empowerment",
+  description: "Advocating for environmental preservation, water conservation, waste management, and community empowerment in Kisumu County, Kenya.",
 };
 
 export default function RootLayout({

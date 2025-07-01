@@ -29,15 +29,15 @@ export default function Contact() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-600 text-white py-20">
+      <section className="bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-              Get in Touch
+              Contact FCC CBO
             </h1>
             <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-blue-100">
-              We&apos;d love to hear from you! Whether you have questions, suggestions, 
-              or want to get involved, don&apos;t hesitate to reach out.
+              We&apos;d love to hear from you! Whether you have questions about environmental conservation, 
+              want to volunteer, or need information about our programs, don&apos;t hesitate to reach out.
             </p>
           </div>
         </div>
@@ -137,15 +137,15 @@ export default function Contact() {
               
               <div className="space-y-8">
                 <div className="flex items-start space-x-4">
-                  <div className="bg-blue-100 p-3 rounded-lg">
-                    <MapPin className="h-6 w-6 text-blue-600" />
+                  <div className="bg-green-100 p-3 rounded-lg">
+                    <MapPin className="h-6 w-6 text-green-600" />
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Visit Us</h3>
                     <p className="text-gray-600">
-                      123 Community Street<br />
-                      Your City, YC 12345<br />
-                      United States
+                      Flamingo Unit, Kondele Ward<br />
+                      P.O Box 2340-40100<br />
+                      Kisumu County, Kenya
                     </p>
                   </div>
                 </div>

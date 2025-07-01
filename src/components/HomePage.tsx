@@ -10,15 +10,15 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
           <div className="text-center">
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              Building Stronger
+              Environmental Conservation
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-400">
-                Communities
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">
+                Community Empowerment
               </span>
             </h1>
             <p className="text-xl lg:text-2xl mb-8 max-w-3xl mx-auto text-blue-100">
-              Join us in creating positive change through meaningful connections, 
-              community events, and volunteer opportunities that make a real difference.
+              FLAMINGO CHAP CHAP CBO - Working for environmental management, community empowerment, 
+              and livelihood improvement in Kisumu County, Kenya.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link 
@@ -43,32 +43,32 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-blue-600" />
-              </div>
-              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">500+</div>
-              <div className="text-gray-600">Active Members</div>
-            </div>
-            <div className="text-center">
               <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Calendar className="h-8 w-8 text-green-600" />
+                <Users className="h-8 w-8 text-green-600" />
               </div>
-              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">150+</div>
-              <div className="text-gray-600">Events Hosted</div>
+              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">200+</div>
+              <div className="text-gray-600">Community Members</div>
             </div>
             <div className="text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="h-8 w-8 text-purple-600" />
+              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Calendar className="h-8 w-8 text-blue-600" />
               </div>
-              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">$50K+</div>
-              <div className="text-gray-600">Funds Raised</div>
+              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">50+</div>
+              <div className="text-gray-600">Conservation Projects</div>
+            </div>
+            <div className="text-center">
+              <div className="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Heart className="h-8 w-8 text-teal-600" />
+              </div>
+              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">5,000+</div>
+              <div className="text-gray-600">Trees Planted</div>
             </div>
             <div className="text-center">
               <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Handshake className="h-8 w-8 text-orange-600" />
               </div>
-              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">1000+</div>
-              <div className="text-gray-600">Volunteer Hours</div>
+              <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">10+</div>
+              <div className="text-gray-600">River Clean-ups</div>
             </div>
           </div>
         </div>
@@ -79,10 +79,10 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              How We Make a Difference
+              Our Environmental Mission
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Through collaborative efforts and community-driven initiatives, we create lasting positive impact.
+              Through environmental conservation, water protection, and community empowerment, we create sustainable change.
             </p>
           </div>
 
@@ -91,11 +91,11 @@ export default function HomePage() {
               <div className="bg-blue-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
                 <Calendar className="h-8 w-8 text-blue-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Community Events</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Water Conservation</h3>
               <p className="text-gray-600 mb-6">
-                From festivals to workshops, our events bring people together and create lasting memories and connections.
+                Advocating against pollution of River Kibos and River Auji while improving water and sanitation practices in surrounding communities.
               </p>
-              <Link href="/events" className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700">
+              <Link href="/about" className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700">
                 Learn More <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
@@ -104,9 +104,9 @@ export default function HomePage() {
               <div className="bg-green-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
                 <Handshake className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Volunteer Programs</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Waste Management</h3>
               <p className="text-gray-600 mb-6">
-                Make a direct impact in your community through our various volunteer opportunities and programs.
+                Promoting eco-friendly waste management systems, recycling activities, and sustainable practices.
               </p>
               <Link href="/volunteer" className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700">
                 Get Involved <ArrowRight className="ml-2 h-4 w-4" />
@@ -114,15 +114,15 @@ export default function HomePage() {
             </div>
 
             <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-              <div className="bg-purple-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
-                <Heart className="h-8 w-8 text-purple-600" />
+              <div className="bg-teal-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+                <Heart className="h-8 w-8 text-teal-600" />
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Donation Drives</h3>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-4">Urban Farming</h3>
               <p className="text-gray-600 mb-6">
-                Support local families and causes through our organized donation drives and fundraising campaigns.
+                Encouraging modern farming methods, tree planting, and sustainable agricultural practices.
               </p>
-              <Link href="/donate" className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700">
-                Donate Now <ArrowRight className="ml-2 h-4 w-4" />
+              <Link href="/contact" className="inline-flex items-center text-blue-600 font-semibold hover:text-blue-700">
+                Join Program <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </div>
           </div>

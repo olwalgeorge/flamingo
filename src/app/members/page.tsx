@@ -1,274 +1,194 @@
-import { Users, Star, MapPin, Mail, Calendar } from 'lucide-react';
-import Link from 'next/link';
+import { Users, UserCheck, UserPlus, Shield, Award, Star } from 'lucide-react';
 
-export default function Members() {
-  const featuredMembers = [
-    {
-      id: 1,
-      name: "Sarah Martinez",
-      role: "Community Leader",
-      joinDate: "2021",
-      avatar: "SM",
-      bio: "Sarah has been instrumental in organizing our annual community festival and leads our youth mentorship program.",
-      skills: ["Event Planning", "Youth Mentoring", "Public Speaking"],
-      achievements: ["Community Service Award 2023", "Event Organizer of the Year"]
-    },
-    {
-      id: 2,
-      name: "David Johnson",
-      role: "Volunteer Coordinator",
-      joinDate: "2020",
-      avatar: "DJ",
-      bio: "David coordinates our volunteer programs and ensures everyone finds meaningful ways to contribute to the community.",
-      skills: ["Program Management", "Team Leadership", "Community Outreach"],
-      achievements: ["Volunteer Excellence Award", "Leadership Recognition"]
-    },
-    {
-      id: 3,
-      name: "Emily Wong",
-      role: "Events Specialist",
-      joinDate: "2022",
-      avatar: "EW",
-      bio: "Emily brings creativity and organization to all our events, making sure every gathering is memorable and impactful.",
-      skills: ["Event Management", "Creative Design", "Social Media"],
-      achievements: ["Creative Excellence Award", "Social Media Impact Award"]
-    },
-    {
-      id: 4,
-      name: "Michael Rodriguez",
-      role: "Fundraising Lead",
-      joinDate: "2021",
-      avatar: "MR",
-      bio: "Michael leads our fundraising efforts and has helped raise over $30,000 for community programs this year.",
-      skills: ["Fundraising", "Grant Writing", "Financial Planning"],
-      achievements: ["Fundraising Champion", "Grant Success Award"]
-    },
-    {
-      id: 5,
-      name: "Lisa Chen",
-      role: "Education Director",
-      joinDate: "2020",
-      avatar: "LC",
-      bio: "Lisa oversees our educational programs and workshops, helping community members develop new skills.",
-      skills: ["Education", "Workshop Development", "Curriculum Design"],
-      achievements: ["Education Excellence Award", "Program Innovation"]
-    },
-    {
-      id: 6,
-      name: "James Thompson",
-      role: "Community Outreach",
-      joinDate: "2023",
-      avatar: "JT",
-      bio: "James connects with local businesses and organizations to build partnerships that benefit our community.",
-      skills: ["Partnership Development", "Networking", "Business Relations"],
-      achievements: ["Partnership Builder Award", "Newcomer of the Year"]
-    }
-  ];
+const membershipTypes = [
+  {
+    type: "Ordinary Members",
+    description: "Individuals aged 18 years and above who subscribe to the objectives of FCC CBO and are accepted as members",
+    icon: Users,
+    color: "blue",
+    rights: [
+      "Participate in all meetings",
+      "Vote on matters affecting the organization", 
+      "Elect officials",
+      "Access organization services"
+    ]
+  },
+  {
+    type: "Patron Members",
+    description: "Distinguished individuals who provide leadership and guidance to the organization",
+    icon: Award,
+    color: "purple",
+    rights: [
+      "Provide strategic direction",
+      "Mentor ordinary members",
+      "Access to all meetings",
+      "Special advisory role"
+    ]
+  },
+  {
+    type: "Honorary Members",
+    description: "Persons who have made outstanding contributions to environmental conservation",
+    icon: Star,
+    color: "yellow",
+    rights: [
+      "Recognition for contributions",
+      "Attend general meetings",
+      "Advisory capacity",
+      "Special recognition privileges"
+    ]
+  }
+];
 
-  const memberBenefits = [
-    {
-      title: "Exclusive Events",
-      description: "Access to member-only events and early registration for popular programs.",
-      icon: Calendar
-    },
-    {
-      title: "Skill Sharing",
-      description: "Share your expertise and learn from other community members.",
-      icon: Star
-    },
-    {
-      title: "Leadership Opportunities",
-      description: "Take on leadership roles and help shape community initiatives.",
-      icon: Users
-    },
-    {
-      title: "Local Network",
-      description: "Build meaningful connections with neighbors and local leaders.",
-      icon: MapPin
-    }
-  ];
+const memberRights = [
+  "To participate in meetings of the organization",
+  "To vote on all matters affecting the organization", 
+  "To elect the officials of the organization",
+  "To benefit from the services of the organization",
+  "To access the records of the organization subject to the rules",
+  "To participate in the activities of the organization",
+  "To be treated fairly and with respect by all members"
+];
 
-  const getAvatarColors = (index: number) => {
-    const colors = [
-      'from-blue-400 to-purple-400',
-      'from-green-400 to-blue-400',
-      'from-purple-400 to-pink-400',
-      'from-orange-400 to-red-400',
-      'from-teal-400 to-green-400',
-      'from-indigo-400 to-purple-400'
-    ];
-    return colors[index % colors.length];
-  };
+const memberObligations = [
+  "To pay the prescribed membership fees",
+  "To attend meetings regularly",
+  "To abide by the constitution and rules of the organization",
+  "To work towards achieving the objectives of the organization",
+  "To participate actively in organization activities",
+  "To respect other members and maintain dignity",
+  "To protect the reputation and interests of the organization"
+];
 
+export default function MembersPage() {
   return (
-    <div className="bg-white">
+    <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-600 text-white py-20">
+      <section className="bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-              Our Community Members
-            </h1>
-            <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-blue-100">
-              Meet the amazing individuals who make our community stronger through 
-              their dedication, skills, and passion for positive change.
+            <h1 className="text-5xl font-bold mb-6">FCC CBO Membership</h1>
+            <p className="text-xl max-w-3xl mx-auto">
+              Join our community-based organization working for environmental conservation and community empowerment in Kisumu County
             </p>
           </div>
         </div>
       </section>
 
-      {/* Member Stats */}
+      {/* Membership Types */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">Membership Categories</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              FCC CBO welcomes different types of members based on their commitment and contributions to our mission
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {membershipTypes.map((membership, index) => {
+              const IconComponent = membership.icon;
+              return (
+                <div key={index} className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-all duration-300">
+                  <div className={`bg-${membership.color}-100 w-16 h-16 rounded-lg flex items-center justify-center mb-6`}>
+                    <IconComponent className={`h-8 w-8 text-${membership.color}-600`} />
+                  </div>
+                  <h3 className="text-2xl font-semibold text-gray-900 mb-4">{membership.type}</h3>
+                  <p className="text-gray-600 mb-6">{membership.description}</p>
+                  
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-gray-900">Rights & Benefits:</h4>
+                    <ul className="text-gray-600 space-y-1">
+                      {membership.rights.map((right, idx) => (
+                        <li key={idx} className="flex items-center">
+                          <UserCheck className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                          {right}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Rights and Obligations */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* Member Rights */}
+            <div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-8">Member Rights</h3>
+              <div className="space-y-4">
+                {memberRights.map((right, index) => (
+                  <div key={index} className="flex items-start">
+                    <Shield className="h-6 w-6 text-green-500 mr-3 flex-shrink-0 mt-1" />
+                    <p className="text-gray-700">{right}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Member Obligations */}
+            <div>
+              <h3 className="text-3xl font-bold text-gray-900 mb-8">Member Obligations</h3>
+              <div className="space-y-4">
+                {memberObligations.map((obligation, index) => (
+                  <div key={index} className="flex items-start">
+                    <UserCheck className="h-6 w-6 text-blue-500 mr-3 flex-shrink-0 mt-1" />
+                    <p className="text-gray-700">{obligation}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Membership Statistics */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">Our Growing Community</h3>
+          </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">500+</div>
+              <div className="text-4xl font-bold text-green-600 mb-2">200+</div>
               <div className="text-gray-600">Active Members</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-green-600 mb-2">50+</div>
-              <div className="text-gray-600">Team Leaders</div>
+              <div className="text-4xl font-bold text-blue-600 mb-2">15</div>
+              <div className="text-gray-600">Leadership Team</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-purple-600 mb-2">25+</div>
-              <div className="text-gray-600">Neighborhoods</div>
+              <div className="text-4xl font-bold text-purple-600 mb-2">10</div>
+              <div className="text-gray-600">Wards Covered</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-orange-600 mb-2">5</div>
+              <div className="text-4xl font-bold text-orange-600 mb-2">5+</div>
               <div className="text-gray-600">Years Active</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Members */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Featured Community Leaders
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              These dedicated members go above and beyond to make our community a better place for everyone.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredMembers.map((member, index) => (
-              <div key={member.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                <div className="p-8">
-                  <div className="text-center mb-6">
-                    <div className={`w-20 h-20 bg-gradient-to-r ${getAvatarColors(index)} rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4`}>
-                      {member.avatar}
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
-                    <p className="text-blue-600 font-medium mb-2">{member.role}</p>
-                    <p className="text-sm text-gray-500">Member since {member.joinDate}</p>
-                  </div>
-                  
-                  <p className="text-gray-600 mb-6 text-center">{member.bio}</p>
-                  
-                  <div className="mb-6">
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2">Skills & Expertise</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {member.skills.map((skill, idx) => (
-                        <span key={idx} className="px-3 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <h4 className="text-sm font-semibold text-gray-900 mb-2">Achievements</h4>
-                    <div className="space-y-1">
-                      {member.achievements.map((achievement, idx) => (
-                        <div key={idx} className="flex items-center text-sm text-gray-600">
-                          <Star className="h-3 w-3 text-yellow-500 mr-2 flex-shrink-0" />
-                          {achievement}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Member Benefits */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Member Benefits
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Being a member of our community comes with many opportunities and benefits.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {memberBenefits.map((benefit, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow duration-300">
-                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <benefit.icon className="h-8 w-8 text-blue-600" />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">{benefit.title}</h3>
-                <p className="text-gray-600">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Join CTA */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-12 text-center text-white">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-              Ready to Join Our Community?
-            </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto text-blue-100">
-              Become a member today and start making a difference in your community. 
-              It&apos;s free to join and there are no obligations - just opportunities to connect and contribute.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link 
-                href="/contact" 
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                Become a Member
-              </Link>
-              <Link 
-                href="/volunteer" 
-                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-200"
-              >
-                Start Volunteering
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Member Directory Info */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">
-            Looking for Someone Specific?
-          </h2>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Our full member directory is available to registered members. Contact us to get connected 
-            with specific team leaders or find members with particular skills.
+      {/* Membership Application */}
+      <section className="py-20 bg-gradient-to-br from-green-600 to-blue-600">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-4xl font-bold text-white mb-6">Ready to Join Us?</h2>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Become part of the FCC CBO community and contribute to environmental conservation and community development
           </p>
-          <Link 
-            href="/contact" 
-            className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Mail className="mr-2 h-4 w-4" />
-            Contact Us for Member Directory
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-200 shadow-lg">
+              <UserPlus className="inline-block h-5 w-5 mr-2" />
+              Apply for Membership
+            </button>
+            <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-all duration-200">
+              Learn More
+            </button>
+          </div>
         </div>
       </section>
     </div>

@@ -4,15 +4,15 @@ export default function About() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 to-purple-600 text-white py-20">
+      <section className="bg-gradient-to-br from-green-600 to-blue-600 text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-              About CommunityConnect
+              About FLAMINGO CHAP CHAP CBO
             </h1>
-            <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-blue-100">
-              We are a passionate group of individuals dedicated to building stronger, 
-              more connected communities through meaningful action and collaboration.
+            <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-green-100">
+              A values-driven community organization working for environmental conservation, 
+              community empowerment, and sustainable development in Kisumu County, Kenya.
             </p>
           </div>
         </div>
@@ -24,47 +24,68 @@ export default function About() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Our Mission
+                Our Mission & Vision
               </h2>
-              <p className="text-lg text-gray-600 mb-8">
-                To create lasting positive change in our communities by fostering connections, 
-                organizing impactful events, and providing meaningful volunteer opportunities 
-                that bring people together and make a real difference.
-              </p>
+              <div className="mb-8">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">Vision</h3>
+                <p className="text-lg text-gray-600 mb-6">
+                  A values-driven society of people who consciously work for the continued improvement 
+                  of their livelihoods and a greener, cleaner world. To be an accredited organization 
+                  in promoting sustainable, healthy environmental communities, urban farming practices, 
+                  waste management, and recycling activities around and beyond Kisumu County.
+                </p>
+              </div>
+              <div className="mb-8">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">Mission</h3>
+                <p className="text-lg text-gray-600 mb-6">
+                  We strive for better environmental management, community empowerment, and livelihood 
+                  improvement using tree planting, urban farming practices, waste management, and 
+                  recycling activities as an entry point. To advocate for environmental preservation 
+                  and provision of safe drinkable, fishable and swimmable water to communities around 
+                  the shores of River Kibos and River Auji and Kisumu County at large.
+                </p>
+              </div>
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">500+</div>
+                  <div className="text-3xl font-bold text-green-600 mb-2">200+</div>
                   <div className="text-gray-600">Community Members</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600 mb-2">150+</div>
-                  <div className="text-gray-600">Events Organized</div>
+                  <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
+                  <div className="text-gray-600">Conservation Projects</div>
                 </div>
               </div>
             </div>
             <div className="lg:pl-12">
-              <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-8 rounded-2xl">
+              <div className="bg-gradient-to-br from-green-50 to-blue-50 p-8 rounded-2xl">
                 <h3 className="text-2xl font-semibold text-gray-900 mb-4">Our Values</h3>
                 <ul className="space-y-4">
                   <li className="flex items-start space-x-3">
-                    <Heart className="h-6 w-6 text-red-500 mt-1 flex-shrink-0" />
+                    <Heart className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
                     <div>
-                      <div className="font-semibold text-gray-900">Compassion</div>
-                      <div className="text-gray-600">We care deeply about our community and each other</div>
+                      <div className="font-semibold text-gray-900">Love for Environmental Conservation</div>
+                      <div className="text-gray-600">We are passionate about protecting our natural resources</div>
                     </div>
                   </li>
                   <li className="flex items-start space-x-3">
                     <Users className="h-6 w-6 text-blue-500 mt-1 flex-shrink-0" />
                     <div>
-                      <div className="font-semibold text-gray-900">Collaboration</div>
-                      <div className="text-gray-600">Together we achieve more than we ever could alone</div>
+                      <div className="font-semibold text-gray-900">Self and Community Empowerment</div>
+                      <div className="text-gray-600">Building capacity and empowering community members</div>
                     </div>
                   </li>
                   <li className="flex items-start space-x-3">
-                    <Target className="h-6 w-6 text-green-500 mt-1 flex-shrink-0" />
+                    <Target className="h-6 w-6 text-teal-500 mt-1 flex-shrink-0" />
                     <div>
-                      <div className="font-semibold text-gray-900">Impact</div>
-                      <div className="text-gray-600">We focus on creating meaningful, lasting change</div>
+                      <div className="font-semibold text-gray-900">Volunteerism</div>
+                      <div className="text-gray-600">Encouraging voluntary participation in community development</div>
+                    </div>
+                  </li>
+                  <li className="flex items-start space-x-3">
+                    <Heart className="h-6 w-6 text-orange-500 mt-1 flex-shrink-0" />
+                    <div>
+                      <div className="font-semibold text-gray-900">Accountability, Transparency, and Honesty</div>
+                      <div className="text-gray-600">Maintaining integrity in all our operations</div>
                     </div>
                   </li>
                 </ul>
@@ -82,44 +103,44 @@ export default function About() {
               Our Leadership Team
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Meet the dedicated individuals who help guide our organization and community initiatives.
+              Meet the dedicated leaders who guide our environmental conservation and community empowerment initiatives.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">
-                AS
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Alex Smith</h3>
-              <p className="text-blue-600 mb-4">Executive Director</p>
-              <p className="text-gray-600">
-                With over 10 years of community organizing experience, Alex leads our strategic initiatives 
-                and community partnerships.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
               <div className="w-24 h-24 bg-gradient-to-r from-green-400 to-blue-400 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">
-                MJ
+                SW
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Maria Johnson</h3>
-              <p className="text-blue-600 mb-4">Program Coordinator</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Samuel Weswa Khaukha</h3>
+              <p className="text-green-600 mb-4">Chairman</p>
               <p className="text-gray-600">
-                Maria oversees our volunteer programs and ensures every community member finds 
-                meaningful ways to get involved.
+                Leading our organization with a vision for environmental conservation and community development 
+                in Kisumu County.
               </p>
             </div>
 
             <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">
-                DC
+              <div className="w-24 h-24 bg-gradient-to-r from-blue-400 to-teal-400 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">
+                GO
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">David Chen</h3>
-              <p className="text-blue-600 mb-4">Events Manager</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">George Omondi Olwal</h3>
+              <p className="text-green-600 mb-4">General Secretary</p>
               <p className="text-gray-600">
-                David brings creativity and organization to all our events, making sure every 
-                gathering is memorable and impactful.
+                Managing organizational records, correspondence, and ensuring effective communication 
+                across all our programs.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
+              <div className="w-24 h-24 bg-gradient-to-r from-teal-400 to-green-400 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-6">
+                LC
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Len Chelimo Koskei</h3>
+              <p className="text-green-600 mb-4">Treasurer</p>
+              <p className="text-gray-600">
+                Overseeing financial management, ensuring transparency and accountability in all 
+                monetary transactions and projects.
               </p>
             </div>
           </div>
