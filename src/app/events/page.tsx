@@ -1,82 +1,10 @@
 import { Calendar, MapPin, Clock, Users, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getAllEvents, Event } from '../../data/events';
 
 export default function Events() {
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: "River Kibos Clean-up Campaign",
-      date: "July 15, 2025",
-      time: "8:00 AM - 12:00 PM",
-      location: "River Kibos Watershed, Kondele Ward",
-      description: "Join us for our monthly river clean-up initiative to protect water sources and preserve aquatic ecosystems.",
-      category: "environmental",
-      attendees: 45,
-      maxAttendees: 60,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 2,
-      title: "Quarterly General Meeting - Q3 2025",
-      date: "July 20, 2025",
-      time: "2:00 PM - 5:00 PM",
-      location: "FCC CBO Office, Flamingo Unit",
-      description: "Mandatory quarterly meeting for all management committee members to discuss progress and plan future activities.",
-      category: "meeting",
-      attendees: 15,
-      maxAttendees: 20,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 3,
-      title: "Tree Planting Workshop",
-      date: "July 28, 2025",
-      time: "9:00 AM - 3:00 PM",
-      location: "Community Center, Kondele Ward",
-      description: "Educational workshop on sustainable tree planting techniques and watershed conservation practices.",
-      category: "educational",
-      attendees: 30,
-      maxAttendees: 40,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 4,
-      title: "Urban Farming Training",
-      date: "August 5, 2025",
-      time: "10:00 AM - 4:00 PM",
-      location: "FCC CBO Training Grounds",
-      description: "Hands-on training for community members on modern urban farming methods and sustainable agriculture.",
-      category: "training",
-      attendees: 25,
-      maxAttendees: 35,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 5,
-      title: "Waste Management & Recycling Seminar",
-      date: "August 12, 2025",
-      time: "1:00 PM - 4:00 PM",
-      location: "Kondele Community Hall",
-      description: "Learn about eco-friendly waste management systems and recycling opportunities for community benefit.",
-      category: "environmental",
-      attendees: 40,
-      maxAttendees: 50,
-      image: "/api/placeholder/400/250"
-    },
-    {
-      id: 6,
-      title: "Women's Basket Weaving Workshop",
-      date: "August 19, 2025",
-      time: "2:00 PM - 6:00 PM",
-      location: "FCC CBO Community Center",
-      description: "Empowering women through traditional weaving skills and income-generating activities.",
-      category: "skills",
-      attendees: 20,
-      maxAttendees: 25,
-      image: "/api/placeholder/400/250"
-    }
-  ];
+  const upcomingEvents = getAllEvents();
 
   const getCategoryColor = (category: string) => {
     switch (category) {
@@ -138,7 +66,7 @@ export default function Events() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingEvents.map((event) => (
+            {upcomingEvents.map((event: Event) => (
               <div key={event.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                 <div className="h-48 bg-gradient-to-br from-blue-400 to-purple-400 flex items-center justify-center">
                   <Calendar className="h-16 w-16 text-white opacity-80" />

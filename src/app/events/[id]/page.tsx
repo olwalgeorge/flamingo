@@ -1,58 +1,9 @@
-import { Calendar, MapPin, Clock, Users, ArrowLeft, Share2, Download } from 'lucide-react';
+import { Calendar, MapPin, Clock, Users, ArrowLeft, Share2, Download, CheckCircle, Target, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import RiverKibosMap from '../../../components/RiverKibosMap';
-
-// This would typically come from a database or API
-const events = [
-  {
-    id: "1",
-    title: "River Kibos Clean-up Campaign",
-    date: "July 15, 2025",
-    time: "8:00 AM - 12:00 PM",
-    location: "River Kibos Watershed, Kondele Ward",
-    description: "Join us for our monthly river clean-up initiative to protect water sources and preserve aquatic ecosystems. This comprehensive campaign focuses on removing pollutants, plastic waste, and debris from the River Kibos watershed area.",
-    category: "environmental",
-    attendees: 45,
-    maxAttendees: 60,
-    image: "/api/placeholder/800/400",
-    coordinates: { lat: -0.0917, lng: 34.7680 }, // River Kibos coordinates
-    fullDescription: `The River Kibos Clean-up Campaign is a monthly community-driven initiative aimed at preserving one of Kisumu's most important water sources. River Kibos flows through several wards in Kisumu County and directly impacts the lives of thousands of residents.
-
-This campaign involves:
-• Removal of solid waste and plastic pollution from the riverbanks and water
-• Water quality testing and monitoring
-• Community education on proper waste disposal
-• Tree planting along the riverbanks to prevent erosion
-• Collaboration with local authorities and environmental agencies
-
-Meeting Points:
-• Primary Assembly: Kondele Market Bridge (8:00 AM)
-• Secondary Points: Nyamasaria Bridge, Mamboleo Junction
-• Equipment Distribution: Kondele Ward Office
-
-What to Bring:
-• Comfortable work clothes and waterproof boots
-• Gloves (if you have them - we'll provide extras)
-• Water bottle and light snacks
-• Positive attitude and community spirit!
-
-Impact So Far:
-• Over 500 tons of waste removed since 2023
-• 1,200+ trees planted along riverbanks
-• Water quality improved by 40%
-• 15 community groups now actively participate
-
-This event is suitable for all ages and fitness levels. Families are especially welcome, as we believe environmental stewardship should be taught from an early age.`,
-    organizer: "FCC CBO Environmental Committee",
-    contact: "environment@fcccbo.org",
-    requirements: ["Comfortable work clothes", "Water bottle", "Enthusiasm for environmental conservation"],
-    meetingPoints: [
-      { name: "Primary Assembly Point", location: "Kondele Market Bridge", time: "8:00 AM" },
-      { name: "Secondary Point A", location: "Nyamasaria Bridge", time: "8:15 AM" },
-      { name: "Secondary Point B", location: "Mamboleo Junction", time: "8:30 AM" }
-    ]
-  }
-];
+import EventMap from '../../../components/EventMap';
+import { getEventById } from '../../../data/events';
+import { getEventMapData } from '../../../data/eventMaps';
 
 interface PageProps {
   params: Promise<{
@@ -62,7 +13,8 @@ interface PageProps {
 
 export default async function EventDetails({ params }: PageProps) {
   const resolvedParams = await params;
-  const event = events.find(e => e.id === resolvedParams.id);
+  const event = getEventById(resolvedParams.id);
+  const mapData = event ? getEventMapData(event.id) : null;
 
   if (!event) {
     return (
@@ -123,31 +75,126 @@ export default async function EventDetails({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Meeting Points */}
-              <div className="mt-12">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Meeting Points</h3>
-                <div className="grid gap-4">
-                  {event.meetingPoints.map((point, index) => (
-                    <div key={index} className="bg-gray-50 p-4 rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-semibold text-gray-900">{point.name}</h4>
-                          <p className="text-gray-600">{point.location}</p>
+              {/* Meeting Points - Only show for events that have them */}
+              {event.meetingPoints && event.meetingPoints.length > 0 && (
+                <div className="mt-12">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Meeting Points</h3>
+                  <div className="grid gap-4">
+                    {event.meetingPoints.map((point, index) => (
+                      <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-semibold text-gray-900">{point.name}</h4>
+                            <p className="text-gray-600">{point.location}</p>
+                          </div>
+                          <div className="text-blue-600 font-semibold">{point.time}</div>
                         </div>
-                        <div className="text-blue-600 font-semibold">{point.time}</div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Interactive Map */}
-              <div className="mt-12">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Event Location & River Kibos Map</h3>
-                <div className="bg-gray-50 rounded-lg p-6">
-                  <RiverKibosMap />
+              {/* Event Agenda - Show for events that have an agenda */}
+              {event.agenda && event.agenda.length > 0 && (
+                <div className="mt-12">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Event Schedule</h3>
+                  <div className="space-y-4">
+                    {event.agenda.map((item, index) => (
+                      <div key={index} className="flex border-l-4 border-blue-500 pl-4 py-3 bg-blue-50">
+                        <div className="flex-shrink-0 w-20 text-blue-600 font-semibold text-sm">
+                          {item.time}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">{item.activity}</h4>
+                          {item.details && <p className="text-gray-600 text-sm mt-1">{item.details}</p>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Interactive Map - Show for all events */}
+              {mapData ? (
+                <div className="mt-12">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Event Location Map</h3>
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <EventMap
+                      eventId={event.id}
+                      eventTitle={event.title}
+                      mapPoints={mapData.mapPoints}
+                      centerLocation={mapData.centerLocation}
+                      mapDescription={mapData.mapDescription}
+                      transportationInfo={mapData.transportationInfo}
+                      additionalInfo={mapData.additionalInfo}
+                    />
+                  </div>
+                </div>
+              ) : event.id === "1" && (
+                <div className="mt-12">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-6">Event Location & River Kibos Map</h3>
+                  <div className="bg-gray-50 rounded-lg p-6">
+                    <RiverKibosMap />
+                  </div>
+                </div>
+              )}
+
+              {/* Materials & Outcomes - For training/workshop events */}
+              {(event.materials || event.outcomes) && (
+                <div className="mt-12 grid md:grid-cols-2 gap-6">
+                  {event.materials && (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                      <h4 className="font-semibold text-blue-900 mb-3 flex items-center">
+                        <BookOpen className="h-5 w-5 mr-2" />
+                        Materials Provided
+                      </h4>
+                      <ul className="space-y-2">
+                        {event.materials.map((material, index) => (
+                          <li key={index} className="flex items-start text-blue-800">
+                            <span className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                            {material}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {event.outcomes && (
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                      <h4 className="font-semibold text-green-900 mb-3 flex items-center">
+                        <Target className="h-5 w-5 mr-2" />
+                        Expected Outcomes
+                      </h4>
+                      <ul className="space-y-2">
+                        {event.outcomes.map((outcome, index) => (
+                          <li key={index} className="flex items-start text-green-800">
+                            <CheckCircle className="h-4 w-4 text-green-600 mt-0.5 mr-2 flex-shrink-0" />
+                            {outcome}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Prerequisites - For events that have them */}
+              {event.prerequisites && event.prerequisites.length > 0 && (
+                <div className="mt-8">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                    <h4 className="font-semibold text-yellow-900 mb-3">Prerequisites</h4>
+                    <ul className="space-y-2">
+                      {event.prerequisites.map((prerequisite, index) => (
+                        <li key={index} className="flex items-start text-yellow-800">
+                          <span className="w-2 h-2 bg-yellow-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                          {prerequisite}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}
