@@ -17,7 +17,7 @@ export interface Event {
   time: string;
   location: string;
   image: string;
-  category: 'community' | 'volunteer' | 'fundraising' | 'educational';
+  category: 'community' | 'volunteer' | 'fundraising' | 'educational' | 'environmental' | 'meeting';
   attendees: number;
   maxAttendees?: number;
 }

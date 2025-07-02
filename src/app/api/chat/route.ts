@@ -30,29 +30,40 @@ const getOrganizationContext = (): ChatContextData => ({
       location: 'River Kibos Watershed, Kondele Ward',
       description: 'Monthly river clean-up initiative to protect water sources and preserve aquatic ecosystems. Involves waste removal, water quality testing, and community education.',
       image: '/hero-events.jpg',
-      category: 'community',
+      category: 'environmental',
       attendees: 45
     },
     {
       id: '2',
+      title: 'Quarterly General Meeting - Q3 2025',
+      date: '2025-07-20',
+      time: '14:00',
+      location: 'FCC CBO Office, Flamingo Unit',
+      description: 'Mandatory quarterly meeting for management committee members. Covers Q2 achievements, financial reports, Q4 planning, and strategic discussions.',
+      image: '/placeholder-event.svg',
+      category: 'meeting',
+      attendees: 15
+    },
+    {
+      id: '3',
       title: 'Tree Planting Initiative - Dunga Hill Forest',
       date: '2025-07-22',
       time: '06:00',
       location: 'Dunga Hill Forest',
       description: 'Community tree planting to enhance local ecosystem, combat climate change, and promote reforestation. Focus on native species.',
       image: '/placeholder-event.svg',
-      category: 'community',
+      category: 'environmental',
       attendees: 32
     },
     {
-      id: '3',
+      id: '4',
       title: 'Community Workshop: Waste Management & Recycling',
       date: '2025-07-28',
       time: '14:00',
       location: 'Kondele Community Center',
       description: 'Educational workshop on proper waste segregation, recycling techniques, and sustainable waste management practices.',
       image: '/placeholder-event.svg',
-      category: 'community',
+      category: 'educational',
       attendees: 25
     }
   ],
@@ -212,29 +223,35 @@ ${context.upcomingEvents.map(event =>
    Details: ${event.description}`
   ).join('\n\n')}
 
+MEETINGS:
+- General Meeting: Our next Quarterly General Meeting is July 20, 2025 at 2:00 PM at FCC CBO Office, Flamingo Unit (for management committee members)
+- Regular meetings are held quarterly for planning and progress reviews
+
 OPERATING AREAS: ${context.organizationInfo.contactInfo.operatingAreas?.join(', ')}
 CONTACT: ${context.organizationInfo.contactInfo.email} | ${context.organizationInfo.contactInfo.phone}
 
 INSTRUCTIONS:
+- Start all responses with "At FLAMINGO CHAP CHAP CBO we..." (except for greetings)
+- Be very concise and direct - 1-2 sentences maximum for most responses
 - Answer questions directly using the organization information above
-- Include relevant internal links (e.g., "You can see all our events at /events")
-- Be conversational but informative
+- Include relevant internal links when helpful (e.g., "Check /events for details")
 - Provide the secretary number (+254722113087) when contact info is requested
-- Keep responses focused and helpful
+- Be conversational but brief
 
 RESPONSE GUIDELINES:
-- Be conversational and concise (1-3 sentences for simple questions)
-- Provide specific details when asked about events, leadership, membership, values, or services
-- Use the exact information provided above
-- For membership questions, explain the different types and their rights
-- For event questions, give complete details including dates, times, locations, and descriptions
-- Sound natural and helpful, not corporate
-- If asked about something not covered above, direct them to contact us directly
+- For events: Give type, date, time, location briefly (e.g., "At FLAMINGO CHAP CHAP CBO we have a River Kibos Clean-up on July 15th at 8:00 AM in Kondele Ward.")
+- For meetings: "At FLAMINGO CHAP CHAP CBO we hold quarterly general meetings. The next one is July 20, 2025 at 2:00 PM at our office in Flamingo Unit."
+- For membership: Brief explanation of types and benefits
+- For leadership: Just names and positions
+- For mission/values: One key point only
+- For services: List 2-3 main ones
+- Sound natural but keep it short
 
 Examples:
-Simple greeting: "Hi! I'm here to help with questions about FLAMINGO CHAP CHAP CBO. What would you like to know?"
-Leadership question: "Our leadership team includes Chairman Samuel Weswa Khaukha, General Secretary George Omondi Olwal, and Treasurer Len Chelimo Koskei."
-Event question: Give full event details including date, time, location, and description.`;
+Events: "At FLAMINGO CHAP CHAP CBO we have upcoming events like River Kibos Clean-up (July 15), Tree Planting (July 22), and Waste Management Workshop (July 28). See /events for details."
+General Meeting: "At FLAMINGO CHAP CHAP CBO we hold quarterly general meetings. The next one is July 20, 2025 at 2:00 PM at our office in Flamingo Unit for management committee members."
+Leadership: "At FLAMINGO CHAP CHAP CBO we're led by Chairman Samuel Weswa Khaukha, Secretary George Omondi Olwal, and Treasurer Len Chelimo Koskei."
+Mission: "At FLAMINGO CHAP CHAP CBO we focus on environmental conservation, tree planting, and community empowerment around Kisumu County.";`;
 };
 
 export async function POST(request: NextRequest) {

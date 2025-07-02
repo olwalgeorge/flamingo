@@ -62,7 +62,7 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
           setTimeout(() => {
             const returnGreeting: ChatMessage = {
               id: 'return-greeting',
-              content: `Welcome back, ${storedName}! 🌸 It's wonderful to see you again! What would you like to know about today? 💚`,
+              content: `Welcome back, ${storedName}! 🌸 It's wonderful to see you again! At FLAMINGO CHAP CHAP CBO, we're always here to help. What would you like to know about today? 💚`,
               role: 'assistant',
               timestamp: new Date(),
               sessionId: ''
@@ -74,7 +74,7 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
           setTimeout(() => {
             const nameRequest: ChatMessage = {
               id: 'name-request',
-              content: `I'd love to get to know you better - what's your name, lovely? 😊`,
+              content: `I'd love to get to know you better - what's your name, dear? 😊`,
               role: 'assistant',
               timestamp: new Date(),
               sessionId: ''
@@ -124,7 +124,7 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
       setTimeout(() => {
         const personalGreeting: ChatMessage = {
           id: 'personal-greeting',
-          content: `What a beautiful name, ${newUserName}! 🌸 I'm so happy to meet you! What would you like to know about today? 💚`,
+          content: `What a beautiful name, ${newUserName}! 🌸 I'm so happy to meet you! At FLAMINGO CHAP CHAP CBO, we're passionate about environmental conservation. What would you like to know about today? 💚`,
           role: 'assistant',
           timestamp: new Date(),
           sessionId: sessionId
