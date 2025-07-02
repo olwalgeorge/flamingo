@@ -10,6 +10,8 @@ A modern, responsive web application for community-based organizations built wit
 - **Donation Platform**: Secure donation processing and impact tracking
 - **News & Updates**: Community news, announcements, and stories
 - **Contact System**: Multiple contact methods and inquiry forms
+- **Customer Care Assistant**: AI-powered chat support for instant help
+- **Admin Panel**: Comprehensive management dashboard for administrators
 - **Responsive Design**: Mobile-first design that works on all devices
 
 ## 🚀 Tech Stack
@@ -29,7 +31,9 @@ A modern, responsive web application for community-based organizations built wit
 - **Volunteer** (`/volunteer`) - Volunteer opportunities and applications
 - **News** (`/news`) - Latest community news and announcements
 - **Contact** (`/contact`) - Contact forms and information
+- **Support** (`/support`) - Customer care chat assistant and FAQ
 - **Donate** (`/donate`) - Donation platform with multiple options
+- **Admin Panel** (`/admin-panel-fcc-2025`) - Management dashboard (admin only)
 
 ## 🎨 Design Features
 
@@ -76,6 +80,48 @@ src/
 └── types/
     └── index.ts           # TypeScript type definitions
 ```
+
+## 💬 Customer Care Assistant
+
+The application includes an AI-powered customer care assistant that provides instant support to users.
+
+### Features
+
+- **24/7 Availability**: AI assistant available round the clock
+- **Context-Aware Responses**: Knows about your organization, events, and services
+- **Multi-Channel Support**: Chat widget on all pages + dedicated support page
+- **Admin Dashboard**: Manage chat sessions and user inquiries
+- **Session Management**: Track and organize customer conversations
+
+### Setup
+
+1. **Get an OpenAI API Key**: Sign up at [OpenAI Platform](https://platform.openai.com/api-keys)
+
+2. **Configure Environment Variables**:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Add your OpenAI API key to `.env.local`:
+
+   ```
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
+
+3. **Customize Assistant Behavior**: Edit the system prompt in `/src/app/api/chat/route.ts` to match your organization's tone and services.
+
+### Usage
+
+- **Users**: Click the chat bubble in the bottom-right corner or visit `/support`
+- **Admins**: Access chat session management at `/admin-panel-fcc-2025/chat-sessions`
+
+### Components
+
+- `ChatWidget`: Floating chat button and modal
+- `ChatInterface`: Full-page chat interface
+- `ChatProvider`: Global state management
+- Admin dashboard for session management
 
 ## 🎯 Community Features
 

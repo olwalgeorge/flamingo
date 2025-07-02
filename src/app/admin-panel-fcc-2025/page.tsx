@@ -1,4 +1,4 @@
-import { Calendar, Users, FileText, TrendingUp, Settings, Plus, Edit, Eye, BarChart3 } from 'lucide-react';
+import { Calendar, Users, FileText, TrendingUp, Settings, Plus, Edit, Eye, BarChart3, MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ManagementDashboard() {
@@ -7,7 +7,9 @@ export default function ManagementDashboard() {
     totalEvents: 6,
     totalMembers: 87,
     activeProjects: 4,
-    monthlyGrowth: 12.5
+    monthlyGrowth: 12.5,
+    activeChatSessions: 3,
+    totalChatMessages: 127
   };
 
   const recentEvents = [
@@ -91,6 +93,59 @@ export default function ManagementDashboard() {
               </div>
               <div className="bg-yellow-100 p-3 rounded-full">
                 <TrendingUp className="h-6 w-6 text-yellow-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Customer Support Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Customer Support</h3>
+              <Link 
+                href="/admin-panel-fcc-2025/chat-sessions"
+                className="text-sm text-green-600 hover:text-green-700 font-medium"
+              >
+                View All →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-2">
+                  <div className="bg-blue-100 p-2 rounded-full">
+                    <MessageCircle className="h-5 w-5 text-blue-600" />
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-gray-900">{stats.activeChatSessions}</p>
+                <p className="text-sm text-gray-600">Active Chats</p>
+              </div>
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-2">
+                  <div className="bg-green-100 p-2 rounded-full">
+                    <MessageCircle className="h-5 w-5 text-green-600" />
+                  </div>
+                </div>
+                <p className="text-2xl font-bold text-gray-900">{stats.totalChatMessages}</p>
+                <p className="text-sm text-gray-600">Total Messages</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Support Activity</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">New chat started</span>
+                <span className="text-gray-500">2 min ago</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Member inquiry resolved</span>
+                <span className="text-gray-500">15 min ago</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-gray-600">Event question answered</span>
+                <span className="text-gray-500">1 hour ago</span>
               </div>
             </div>
           </div>

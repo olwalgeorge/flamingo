@@ -72,6 +72,9 @@ export default function Header() {
             <Link href="/contact" className={navLinkClasses('/contact')}>
               Contact
             </Link>
+            <Link href="/support" className={navLinkClasses('/support')}>
+              Support
+            </Link>
           </nav>
 
           {/* CTA Button */}
@@ -149,6 +152,13 @@ export default function Header() {
                 onClick={toggleMenu}
               >
                 Contact
+              </Link>
+              <Link 
+                href="/support" 
+                className={mobileNavLinkClasses('/support')}
+                onClick={toggleMenu}
+              >
+                Support
               </Link>            <Link 
               href="/donate" 
               className={`block mx-3 my-2 text-center px-6 py-2 rounded-lg transition-all duration-300 font-medium ${
