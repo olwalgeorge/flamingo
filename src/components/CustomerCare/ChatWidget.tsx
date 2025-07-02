@@ -188,15 +188,16 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
           setShouldWiggle(false);
           onToggle();
         }}
-        className={`fixed bottom-6 right-6 bg-gradient-to-r from-pink-500 to-green-600 hover:from-pink-600 hover:to-green-700 text-white p-4 rounded-full shadow-lg transition-all duration-300 z-50 flex items-center justify-center ${
+        className={`fixed bottom-4 md:bottom-6 right-4 md:right-6 bg-gradient-to-r from-pink-500 to-green-600 hover:from-pink-600 hover:to-green-700 text-white p-3 md:p-4 rounded-full shadow-lg transition-all duration-300 z-50 flex items-center justify-center ${
           shouldWiggle ? 'animate-wiggle animate-pulse' : 'animate-bounce-in'
         }`}
         aria-label="Chat with Amara - Your friendly environmental assistant"
         title="Hi! I'm Amara 👋 Click to chat about our environmental programs!"
       >
-        <MessageCircle size={24} />
+        <MessageCircle size={20} className="md:hidden" />
+        <MessageCircle size={24} className="hidden md:block" />
         {shouldWiggle && (
-          <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center animate-bounce">
+          <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center animate-bounce text-[10px] md:text-xs">
             💬
           </div>
         )}
@@ -205,34 +206,36 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 w-96 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 transform transition-all duration-500 ${
+    <div className={`fixed bottom-4 md:bottom-6 right-4 md:right-6 w-80 md:w-96 max-w-[calc(100vw-2rem)] bg-white rounded-lg shadow-2xl border border-gray-200 z-50 transform transition-all duration-500 ${
       isAnimating ? 'opacity-0 scale-95 translate-y-4' : 'opacity-100 scale-100 translate-y-0'
-    } ${isMinimized ? 'h-14' : 'h-[500px]'}`}>
+    } ${isMinimized ? 'h-14' : 'h-[450px] md:h-[500px] max-h-[calc(100vh-6rem)]'}`}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-pink-500 to-green-600 text-white p-4 rounded-t-lg flex items-center justify-between">
+      <div className="bg-gradient-to-r from-pink-500 to-green-600 text-white p-3 md:p-4 rounded-t-lg flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-            <span className="text-lg">🌺</span>
+          <div className="w-6 h-6 md:w-8 md:h-8 bg-white/20 rounded-full flex items-center justify-center">
+            <span className="text-sm md:text-lg">🌺</span>
           </div>
           <div>
-            <span className="font-medium">Amara</span>
-            <p className="text-xs text-white/80">Environmental Care Assistant</p>
+            <span className="font-medium text-sm md:text-base">Amara</span>
+            <p className="text-[10px] md:text-xs text-white/80">Environmental Care Assistant</p>
           </div>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1 md:space-x-2">
           <button
             onClick={() => setIsMinimized(!isMinimized)}
             className="hover:bg-white/20 p-1 rounded transition-colors"
             aria-label={isMinimized ? "Expand chat" : "Minimize chat"}
           >
-            <Minimize2 size={16} />
+            <Minimize2 size={14} className="md:hidden" />
+            <Minimize2 size={16} className="hidden md:block" />
           </button>
           <button
             onClick={onToggle}
             className="hover:bg-white/20 p-1 rounded transition-colors"
             aria-label="Close chat"
           >
-            <X size={16} />
+            <X size={14} className="md:hidden" />
+            <X size={16} className="hidden md:block" />
           </button>
         </div>
       </div>
@@ -240,7 +243,7 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
       {!isMinimized && (
         <>
           {/* Messages */}
-          <div className="flex-1 p-4 overflow-y-auto h-80 space-y-4">
+          <div className="flex-1 p-3 md:p-4 overflow-y-auto h-80 max-h-[calc(100vh-16rem)] space-y-3 md:space-y-4">
             {messages.map((message, index) => (
               <div
                 key={message.id}
@@ -252,14 +255,14 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
                 }}
               >
                 <div
-                  className={`max-w-[80%] p-3 rounded-lg shadow-sm ${
+                  className={`max-w-[85%] md:max-w-[80%] p-2 md:p-3 rounded-lg shadow-sm text-xs md:text-sm ${
                     message.role === 'user'
                       ? 'bg-green-600 text-white ml-auto'
                       : 'bg-gray-100 text-gray-800 border border-gray-200'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                  <span className="text-xs opacity-70 mt-1 block">
+                  <p className="text-xs md:text-sm whitespace-pre-wrap">{message.content}</p>
+                  <span className="text-[10px] md:text-xs opacity-70 mt-1 block">
                     {new Date(message.timestamp).toLocaleTimeString([], {
                       hour: '2-digit',
                       minute: '2-digit'
@@ -283,24 +286,25 @@ export default function ChatWidget({ isOpen, onToggle }: ChatWidgetProps) {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-gray-200">
+          <div className="p-3 md:p-4 border-t border-gray-200">
             <div className="flex space-x-2">
               <textarea
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
-                className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors"
+                className="flex-1 border border-gray-300 rounded-lg px-2 md:px-3 py-2 text-xs md:text-sm resize-none focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 transition-colors"
                 rows={1}
                 disabled={isLoading}
               />
               <button
                 onClick={sendMessage}
                 disabled={!inputMessage.trim() || isLoading}
-                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white p-2 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100"
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white p-2 rounded-lg transition-all duration-200 transform hover:scale-105 disabled:hover:scale-100 min-w-[36px] md:min-w-[40px]"
                 aria-label="Send message"
               >
-                <Send size={16} />
+                <Send size={14} className="md:hidden" />
+                <Send size={16} className="hidden md:block" />
               </button>
             </div>
           </div>
