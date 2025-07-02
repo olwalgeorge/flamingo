@@ -19,80 +19,199 @@ async function getTogetherClient() {
 // In-memory storage for demo (in production, use a database)
 const chatSessions = new Map<string, ChatMessage[]>();
 
-// Organization context for the AI assistant
+// Organization context for the AI assistant with comprehensive information
 const getOrganizationContext = (): ChatContextData => ({
   upcomingEvents: [
     {
       id: '1',
-      title: 'Lake Victoria Cleanup Drive',
+      title: 'River Kibos Clean-up Campaign',
       date: '2025-07-15',
       time: '08:00',
-      location: 'Kisumu Waterfront',
-      description: 'Community cleanup activity at Lake Victoria shores',
+      location: 'River Kibos Watershed, Kondele Ward',
+      description: 'Monthly river clean-up initiative to protect water sources and preserve aquatic ecosystems. Involves waste removal, water quality testing, and community education.',
       image: '/hero-events.jpg',
       category: 'community',
       attendees: 45
     },
     {
       id: '2',
-      title: 'Tree Planting Initiative',
+      title: 'Tree Planting Initiative - Dunga Hill Forest',
       date: '2025-07-22',
       time: '06:00',
       location: 'Dunga Hill Forest',
-      description: 'Plant 1000 indigenous trees to restore forest cover',
+      description: 'Community tree planting to enhance local ecosystem, combat climate change, and promote reforestation. Focus on native species.',
       image: '/placeholder-event.svg',
       category: 'community',
-      attendees: 30
+      attendees: 32
+    },
+    {
+      id: '3',
+      title: 'Community Workshop: Waste Management & Recycling',
+      date: '2025-07-28',
+      time: '14:00',
+      location: 'Kondele Community Center',
+      description: 'Educational workshop on proper waste segregation, recycling techniques, and sustainable waste management practices.',
+      image: '/placeholder-event.svg',
+      category: 'community',
+      attendees: 25
+    }
+  ],
+  memberInfo: {
+    totalMembers: 200,
+    activeVolunteers: 85,
+    membershipTypes: [
+      {
+        type: 'Ordinary Members',
+        description: 'Individuals aged 18+ who subscribe to FCC CBO objectives',
+        rights: ['Participate in meetings', 'Vote on matters', 'Elect officials', 'Access services']
+      },
+      {
+        type: 'Patron Members', 
+        description: 'Distinguished individuals providing leadership and guidance',
+        rights: ['Strategic direction', 'Mentor members', 'Advisory role']
+      },
+      {
+        type: 'Honorary Members',
+        description: 'Persons with outstanding environmental conservation contributions',
+        rights: ['Recognition privileges', 'Advisory capacity', 'Special recognition']
+      }
+    ]
+  },
+  leadership: [
+    {
+      name: 'Samuel Weswa Khaukha',
+      position: 'Chairman',
+      role: 'Leading environmental conservation and community development vision'
+    },
+    {
+      name: 'George Omondi Olwal',
+      position: 'General Secretary',
+      role: 'Managing records, correspondence, and program communication'
+    },
+    {
+      name: 'Len Chelimo Koskei',
+      position: 'Treasurer', 
+      role: 'Financial management, transparency, and accountability'
     }
   ],
   organizationInfo: {
     name: 'FLAMINGO CHAP CHAP CBO',
-    mission: 'Environmental conservation, water preservation, waste management, and community empowerment in Kisumu County, Kenya',
+    fullName: 'FLAMINGO Community-Based Organization',
+    establishedYear: 2020,
+    registrationStatus: 'Registered Community-Based Organization',
+    mission: 'We strive for better environmental management, community empowerment, and livelihood improvement using tree planting, urban farming practices, waste management, and recycling activities as an entry point. To advocate for environmental preservation and provision of safe drinkable, fishable and swimmable water to communities around the shores of River Kibos and River Auji and Kisumu County at large.',
+    vision: 'A values-driven society of people who consciously work for the continued improvement of their livelihoods and a greener, cleaner world. To be an accredited organization in promoting sustainable, healthy environmental communities, urban farming practices, waste management, and recycling activities around and beyond Kisumu County.',
+    coreValues: [
+      {
+        value: 'Love for Environmental Conservation',
+        description: 'Passionate about protecting natural resources and ecosystems'
+      },
+      {
+        value: 'Self and Community Empowerment', 
+        description: 'Building capacity and empowering community members for sustainable development'
+      },
+      {
+        value: 'Volunteerism',
+        description: 'Encouraging voluntary participation in community development initiatives'
+      },
+      {
+        value: 'Accountability, Transparency, and Honesty',
+        description: 'Maintaining integrity in all operations and financial management'
+      }
+    ],
     services: [
-      'Environmental conservation programs',
-      'Community clean-up drives',
-      'Tree planting initiatives',
-      'Water conservation projects',
-      'Waste management education',
-      'Community empowerment workshops',
-      'Volunteer coordination',
-      'Educational outreach'
+      'Environmental Conservation Programs',
+      'Tree Planting and Reforestation Initiatives', 
+      'Urban Farming and Sustainable Agriculture Training',
+      'Waste Management and Recycling Education',
+      'Water Conservation and Quality Monitoring',
+      'Community Clean-up Campaigns',
+      'Youth Environmental Education and Mentorship',
+      'Volunteer Coordination and Training',
+      'Community Workshops and Capacity Building',
+      'Environmental Advocacy and Policy Engagement'
+    ],
+    focusAreas: [
+      'River Kibos and River Auji watershed protection',
+      'Lake Victoria ecosystem conservation', 
+      'Urban waste management in Kisumu County',
+      'Community-based natural resource management',
+      'Climate change adaptation and mitigation',
+      'Water quality improvement and access'
+    ],
+    achievements: [
+      '200+ active community members',
+      '50+ conservation projects completed',
+      'Outstanding Community Service Award (2023)',
+      'Youth mentorship program launched',
+      'Regular river clean-up campaigns established',
+      'Community partnerships with local government'
     ],
     contactInfo: {
       email: 'info@flamingochapchap.org',
       phone: '+254 xxx xxx xxx',
-      address: 'Kisumu County, Kenya'
+      address: 'Kisumu County, Kenya',
+      operatingAreas: ['Kondele Ward', 'Kisumu Central', 'River Kibos Watershed', 'River Auji Basin']
     }
   }
 });
 
 const createSystemPrompt = (context: ChatContextData): string => {
-  return `You are a friendly customer care assistant for ${context.organizationInfo.name}, a community organization in Kenya focused on environmental conservation.
+  return `You are a knowledgeable customer care assistant for ${context.organizationInfo.name}, a registered community-based organization in Kenya focused on environmental conservation.
 
-Mission: ${context.organizationInfo.mission}
+ORGANIZATION DETAILS:
+Full Name: ${context.organizationInfo.fullName}
+Established: ${context.organizationInfo.establishedYear}
+Status: ${context.organizationInfo.registrationStatus}
 
-Key Services:
-${context.organizationInfo.services.map(service => `- ${service}`).join('\n')}
+MISSION: ${context.organizationInfo.mission}
 
-Upcoming Events:
+VISION: ${context.organizationInfo.vision}
+
+CORE VALUES:
+${context.organizationInfo.coreValues?.map(cv => `• ${cv.value}: ${cv.description}`).join('\n')}
+
+LEADERSHIP TEAM:
+${context.leadership?.map(leader => `• ${leader.name} - ${leader.position}: ${leader.role}`).join('\n')}
+
+MEMBERSHIP INFO:
+Total Members: ${context.memberInfo?.totalMembers}
+Active Volunteers: ${context.memberInfo?.activeVolunteers}
+
+Membership Types:
+${context.memberInfo?.membershipTypes.map(mt => `• ${mt.type}: ${mt.description}`).join('\n')}
+
+SERVICES WE PROVIDE:
+${context.organizationInfo.services.map(service => `• ${service}`).join('\n')}
+
+FOCUS AREAS:
+${context.organizationInfo.focusAreas?.map(area => `• ${area}`).join('\n')}
+
+ACHIEVEMENTS:
+${context.organizationInfo.achievements?.map(achievement => `• ${achievement}`).join('\n')}
+
+UPCOMING EVENTS:
 ${context.upcomingEvents.map(event =>
-    `- ${event.title} on ${event.date} at ${event.time} in ${event.location}`
-  ).join('\n')}
+    `• ${event.title} - ${event.date} at ${event.time} in ${event.location}
+   Details: ${event.description}`
+  ).join('\n\n')}
 
-Contact: ${context.organizationInfo.contactInfo.email} | ${context.organizationInfo.contactInfo.phone}
+OPERATING AREAS: ${context.organizationInfo.contactInfo.operatingAreas?.join(', ')}
+CONTACT: ${context.organizationInfo.contactInfo.email} | ${context.organizationInfo.contactInfo.phone}
 
-IMPORTANT: Keep responses conversational and concise like a real human would speak. 
-- For greetings: 1-2 sentences max
-- For simple questions: 2-3 sentences 
-- Only give detailed responses when specifically asked for details
-- Be warm but brief
-- Sound natural, not corporate
-- Use everyday language, not formal business speak
+RESPONSE GUIDELINES:
+- Be conversational and concise (1-3 sentences for simple questions)
+- Provide specific details when asked about events, leadership, membership, values, or services
+- Use the exact information provided above
+- For membership questions, explain the different types and their rights
+- For event questions, give complete details including dates, times, locations, and descriptions
+- Sound natural and helpful, not corporate
+- If asked about something not covered above, direct them to contact us directly
 
 Examples:
-Greeting: "Hi there! I'm here to help with questions about our environmental programs. What can I tell you?"
-Simple info: "We're based in Kisumu County and work on Lake Victoria conservation. Want to know about our upcoming cleanup event?"
-Don't list everything unless asked for "all services" or "complete information"`;
+Simple greeting: "Hi! I'm here to help with questions about FLAMINGO CHAP CHAP CBO. What would you like to know?"
+Leadership question: "Our leadership team includes Chairman Samuel Weswa Khaukha, General Secretary George Omondi Olwal, and Treasurer Len Chelimo Koskei."
+Event question: Give full event details including date, time, location, and description.`;
 };
 
 export async function POST(request: NextRequest) {
@@ -155,7 +274,7 @@ export async function POST(request: NextRequest) {
       const completion = await togetherClient.chat.completions.create({
         model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
         messages: openaiMessages,
-        max_tokens: 100,
+        max_tokens: 200,
         temperature: 0.7,
       });
 

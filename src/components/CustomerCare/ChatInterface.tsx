@@ -9,6 +9,8 @@ export default function ChatInterface() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
+  const [isAnimating, setIsAnimating] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -20,15 +22,35 @@ export default function ChatInterface() {
   }, [messages]);
 
   useEffect(() => {
-    // Add welcome message when component mounts
-    const welcomeMessage: ChatMessage = {
-      id: 'welcome',
-      content: `Hello! 👋 Welcome to FLAMINGO CHAP CHAP CBO customer support. I'm here to help you with information about our environmental conservation programs, upcoming events, membership, volunteering opportunities, and donations. How can I assist you today?`,
-      role: 'assistant',
-      timestamp: new Date(),
-      sessionId: ''
-    };
-    setMessages([welcomeMessage]);
+    // Animation and initial conversation setup
+    const timer = setTimeout(() => {
+      setIsAnimating(false);
+      
+      // Add welcome message with typing effect
+      const welcomeMessage: ChatMessage = {
+        id: 'welcome',
+        content: `Hello there! 👋 I'm Amara, and I'm so excited to meet you! Welcome to FLAMINGO CHAP CHAP CBO - we're doing amazing things for environmental conservation and I'd love to tell you all about it! ✨`,
+        role: 'assistant',
+        timestamp: new Date(),
+        sessionId: ''
+      };
+      
+      setMessages([welcomeMessage]);
+      
+      // Add name request after a delay
+      setTimeout(() => {
+        const nameRequest: ChatMessage = {
+          id: 'name-request',
+          content: `I'd love to get to know you better - what's your name, lovely? 😊 I'm here to help with anything you need!`,
+          role: 'assistant',
+          timestamp: new Date(),
+          sessionId: ''
+        };
+        setMessages(prev => [...prev, nameRequest]);
+      }, 2000);
+    }, 1000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const sendMessage = async () => {
@@ -43,6 +65,26 @@ export default function ChatInterface() {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    
+    // Check if this is the first user message (likely their name)
+    if (!userName && messages.length <= 2) {
+      setUserName(inputMessage.trim());
+      setInputMessage('');
+      
+      // Add personalized greeting
+      setTimeout(() => {
+        const personalGreeting: ChatMessage = {
+          id: 'personal-greeting',
+          content: `What a beautiful name, ${inputMessage.trim()}! � I'm so happy to meet you! I'm here to chat about our wonderful environmental programs, upcoming events, volunteer opportunities, or anything else you'd like to know about FLAMINGO CHAP CHAP CBO. What would you like to explore today? 💚`,
+          role: 'assistant',
+          timestamp: new Date(),
+          sessionId: sessionId
+        };
+        setMessages(prev => [...prev, personalGreeting]);
+      }, 1000);
+      return;
+    }
+
     setInputMessage('');
     setIsLoading(true);
 
@@ -72,7 +114,7 @@ export default function ChatInterface() {
       console.error('Error sending message:', error);
       const errorMessage: ChatMessage = {
         id: Date.now().toString(),
-        content: 'Sorry, I encountered an error. Please try again or contact us directly at info@flamingochapchap.org',
+        content: 'Oh dear! I seem to be having a little technical hiccup 😅 Could you try again in a moment? If it keeps happening, feel free to reach out directly at info@flamingochapchap.org - I promise someone wonderful will help you!',
         role: 'assistant',
         timestamp: new Date(),
         sessionId: sessionId
@@ -91,21 +133,36 @@ export default function ChatInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[500px]">
+    <div className={`flex flex-col h-[500px] transition-all duration-1000 ${isAnimating ? 'opacity-0 transform translate-y-4' : 'opacity-100 transform translate-y-0'}`}>
       {/* Messages */}
       <div className="flex-1 p-4 overflow-y-auto space-y-4">
-        {messages.map((message) => (
+        {messages.map((message, index) => (
           <div
             key={message.id}
-            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in-up`}
+            style={{
+              animationDelay: `${index * 0.3}s`,
+              opacity: 0,
+              animation: 'fadeInUp 0.5s ease-out forwards'
+            }}
           >
             <div
-              className={`max-w-[80%] p-3 rounded-lg ${
+              className={`max-w-[80%] p-3 rounded-lg transition-all duration-300 hover:shadow-md ${
                 message.role === 'user'
                   ? 'bg-green-600 text-white ml-auto'
-                  : 'bg-gray-100 text-gray-800'
+                  : 'bg-gray-100 text-gray-800 border border-gray-200'
               }`}
             >
+              {message.role === 'assistant' && (
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">🤖</span>
+                  </div>
+                  <span className="text-xs text-gray-500 font-medium">
+                    {userName ? `Amara for ${userName}` : 'Amara 🌺'}
+                  </span>
+                </div>
+              )}
               <p className="text-sm whitespace-pre-wrap">{message.content}</p>
               <span className="text-xs opacity-70 mt-1 block">
                 {new Date(message.timestamp).toLocaleTimeString([], {
@@ -116,42 +173,64 @@ export default function ChatInterface() {
             </div>
           </div>
         ))}
+        
         {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-800 p-3 rounded-lg">
+          <div className="flex justify-start animate-pulse">
+            <div className="bg-gray-100 p-3 rounded-lg border border-gray-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-6 h-6 bg-green-600 rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs">🤖</span>
+                </div>
+                <span className="text-xs text-gray-500 font-medium">
+                  {userName ? `Amara for ${userName}` : 'Amara 🌺'}
+                </span>
+              </div>
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
               </div>
             </div>
           </div>
         )}
+        
         <div ref={messagesEndRef} />
       </div>
 
       {/* Input */}
-      <div className="p-4 border-t border-gray-200 bg-gray-50">
-        <div className="flex space-x-2">
-          <textarea
+      <div className="p-4 border-t border-gray-200 bg-white">
+        <div className="flex items-center space-x-2">
+          <input
+            type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Type your message..."
-            className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:border-green-500"
-            rows={2}
+            placeholder={userName ? `Type your message, ${userName}...` : "Type your name to get started..."}
+            className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
             disabled={isLoading}
           />
           <button
             onClick={sendMessage}
-            disabled={!inputMessage.trim() || isLoading}
-            className="bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white p-2 rounded-lg transition-colors self-end"
-            aria-label="Send message"
+            disabled={isLoading || !inputMessage.trim()}
+            className="p-3 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
           >
-            <Send size={16} />
+            <Send className="h-4 w-4" />
           </button>
         </div>
       </div>
+      
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -82,7 +82,20 @@ export interface ChatSession {
 
 export interface ChatContextData {
   upcomingEvents: Event[];
-  memberInfo?: Member;
+  memberInfo?: {
+    totalMembers: number;
+    activeVolunteers: number;
+    membershipTypes: {
+      type: string;
+      description: string;
+      rights: string[];
+    }[];
+  };
+  leadership?: {
+    name: string;
+    position: string;
+    role: string;
+  }[];
   recentDonations?: {
     id: string;
     amount: number;
@@ -91,12 +104,23 @@ export interface ChatContextData {
   }[];
   organizationInfo: {
     name: string;
+    fullName?: string;
+    establishedYear?: number;
+    registrationStatus?: string;
     mission: string;
+    vision?: string;
+    coreValues?: {
+      value: string;
+      description: string;
+    }[];
     services: string[];
+    focusAreas?: string[];
+    achievements?: string[];
     contactInfo: {
       email: string;
       phone: string;
       address: string;
+      operatingAreas?: string[];
     };
   };
 }
