@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   ArrowLeft, Save, Calendar, Users, 
   Plus, X, Eye, Settings, FileText, Image as ImageIcon,
@@ -524,40 +524,41 @@ export default function NewEventPage() {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
+            <div className="flex items-center min-w-0 flex-1">
               <Link 
                 href="/admin-panel-fcc-2025/events"
-                className="mr-4 text-gray-600 hover:text-gray-900"
+                className="mr-2 sm:mr-4 text-gray-600 hover:text-gray-900 flex-shrink-0"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">Create New Event</h1>
+              <h1 className="text-lg sm:text-2xl font-bold text-gray-900 truncate">Create New Event</h1>
             </div>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-2 sm:space-x-3">
               <button
                 onClick={() => setPreviewMode(!previewMode)}
-                className="text-gray-600 hover:text-gray-900 flex items-center"
+                className="text-gray-600 hover:text-gray-900 flex items-center px-2 py-1 sm:px-3 sm:py-2"
               >
-                <Eye className="h-4 w-4 mr-1" />
-                Preview
+                <Eye className="h-4 w-4 sm:mr-1" />
+                <span className="hidden sm:inline">Preview</span>
               </button>
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50"
+                className="bg-blue-600 text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50 text-sm sm:text-base"
               >
-                <Save className="h-4 w-4 mr-2" />
-                {isSaving ? 'Saving...' : 'Save Event'}
+                <Save className="h-4 w-4 sm:mr-2" />
+                <span className="hidden sm:inline">{isSaving ? 'Saving...' : 'Save Event'}</span>
+                <span className="sm:hidden">{isSaving ? '...' : 'Save'}</span>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex">
-          {/* Progress Sidebar */}
-          <div className="w-64 flex-shrink-0 mr-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="lg:flex lg:space-x-8">
+          {/* Progress Sidebar - Hidden on mobile, shown as horizontal steps on tablet, sidebar on desktop */}
+          <div className="hidden lg:block w-64 flex-shrink-0">
             <div className="bg-white rounded-lg shadow p-6 sticky top-8">
               <h3 className="font-semibold text-gray-900 mb-4">Event Creation Steps</h3>
               
@@ -686,15 +687,91 @@ export default function NewEventPage() {
             </div>
           </div>
 
+          {/* Mobile Progress Indicator */}
+          <div className="lg:hidden mb-6">
+            <div className="bg-white rounded-lg shadow p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-sm font-medium text-gray-900">Step {currentStep} of {steps.length}</h3>
+                <span className="text-xs text-gray-500">
+                  {Math.round((currentStep / steps.length) * 100)}% Complete
+                </span>
+              </div>
+              
+              {/* Progress bar */}
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div 
+                  className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                  style={{ width: `${(currentStep / steps.length) * 100}%` }}
+                ></div>
+              </div>
+              
+              {/* Current step title */}
+              <div className="flex items-center">
+                <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mr-3 ${
+                  currentStep <= steps.length ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
+                }`}>
+                  {React.createElement(steps.find(s => s.id === currentStep)?.icon || FileText, { className: "h-3 w-3" })}
+                </div>
+                <div>
+                  <div className="font-medium text-gray-900 text-sm">
+                    {steps.find(s => s.id === currentStep)?.title}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Horizontal steps for tablets */}
+              <div className="hidden md:block lg:hidden mt-4 pt-4 border-t">
+                <div className="flex justify-between">
+                  {steps.map((step) => {
+                    const Icon = step.icon;
+                    const isActive = currentStep === step.id;
+                    const isCompleted = currentStep > step.id;
+                    
+                    return (
+                      <button
+                        key={step.id}
+                        onClick={() => setCurrentStep(step.id)}
+                        className={`flex flex-col items-center p-2 rounded-lg transition-all ${
+                          isActive 
+                            ? 'bg-blue-100 text-blue-700' 
+                            : isCompleted
+                            ? 'bg-green-50 text-green-700'
+                            : 'text-gray-600 hover:bg-gray-100'
+                        }`}
+                      >
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center mb-1 ${
+                          isActive 
+                            ? 'bg-blue-500 text-white' 
+                            : isCompleted
+                            ? 'bg-green-500 text-white'
+                            : 'bg-gray-200 text-gray-600'
+                        }`}>
+                          {isCompleted ? (
+                            <CheckCircle className="h-3 w-3" />
+                          ) : (
+                            <Icon className="h-3 w-3" />
+                          )}
+                        </div>
+                        <span className="text-xs font-medium truncate max-w-16">
+                          {step.title.split(' ')[0]}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Main Content */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             <div className="bg-white rounded-lg shadow">
               {/* Step 1: Basic Information */}
               {currentStep === 1 && (
-                <div className="p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Basic Event Information</h2>
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Basic Event Information</h2>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Event Title *
@@ -721,7 +798,7 @@ export default function NewEventPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Category *
                       </label>
-                      <div ref={categoryRef} className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      <div ref={categoryRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         {categories.map((category) => (
                           <button
                             key={category.value}
@@ -804,19 +881,19 @@ export default function NewEventPage() {
 
               {/* Step 2: Schedule & Location */}
               {currentStep === 2 && (
-                <div className="p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Schedule & Location</h2>
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Schedule & Location</h2>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {/* Date & Time Picker */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Event Dates & Times *
                       </label>
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <div className="space-y-3">
                           <label className="text-xs font-medium text-gray-600 uppercase tracking-wide">Start Date & Time</label>
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div className="relative">
                               <input
                                 ref={dateRef}
@@ -858,7 +935,7 @@ export default function NewEventPage() {
                         
                         <div className="space-y-3">
                           <label className="text-xs font-medium text-gray-600 uppercase tracking-wide">End Date & Time</label>
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <div className="relative">
                               <input
                                 type="text"
@@ -989,7 +1066,7 @@ export default function NewEventPage() {
                       )}
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Registration Deadline
@@ -1056,11 +1133,11 @@ export default function NewEventPage() {
 
               {/* Step 3: Registration */}
               {currentStep === 3 && (
-                <div className="p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Registration Details</h2>
+                <div className="p-4 sm:p-6 lg:p-8">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Registration Details</h2>
                   
-                  <div className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-4 sm:space-y-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Maximum Attendees *
@@ -1111,7 +1188,7 @@ export default function NewEventPage() {
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Contact Email *
@@ -1148,7 +1225,7 @@ export default function NewEventPage() {
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Organizer Name
@@ -1244,8 +1321,9 @@ export default function NewEventPage() {
                       </div>
                       <div className="space-y-3">
                         {formData.agenda.map((item, index) => (
-                          <div key={index} className="grid grid-cols-12 gap-3 items-start p-4 bg-gray-50 rounded-lg">
-                            <div className="col-span-2">
+                          <div key={index} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-start p-4 bg-gray-50 rounded-lg">
+                            <div className="sm:col-span-2">
+                              <label className="block text-xs font-medium text-gray-600 mb-1 sm:hidden">Time</label>
                               <input
                                 type="time"
                                 value={item.time}
@@ -1253,7 +1331,8 @@ export default function NewEventPage() {
                                 className="w-full p-2 border border-gray-300 rounded text-sm"
                               />
                             </div>
-                            <div className="col-span-3">
+                            <div className="sm:col-span-3">
+                              <label className="block text-xs font-medium text-gray-600 mb-1 sm:hidden">Activity</label>
                               <input
                                 type="text"
                                 value={item.activity}
@@ -1262,7 +1341,8 @@ export default function NewEventPage() {
                                 className="w-full p-2 border border-gray-300 rounded text-sm"
                               />
                             </div>
-                            <div className="col-span-4">
+                            <div className="sm:col-span-4">
+                              <label className="block text-xs font-medium text-gray-600 mb-1 sm:hidden">Details</label>
                               <input
                                 type="text"
                                 value={item.details}
@@ -1271,7 +1351,8 @@ export default function NewEventPage() {
                                 className="w-full p-2 border border-gray-300 rounded text-sm"
                               />
                             </div>
-                            <div className="col-span-2">
+                            <div className="sm:col-span-2">
+                              <label className="block text-xs font-medium text-gray-600 mb-1 sm:hidden">Speaker</label>
                               <input
                                 type="text"
                                 value={item.speaker || ''}
@@ -1280,7 +1361,7 @@ export default function NewEventPage() {
                                 className="w-full p-2 border border-gray-300 rounded text-sm"
                               />
                             </div>
-                            <div className="col-span-1">
+                            <div className="sm:col-span-1 flex justify-end">
                               <button
                                 onClick={() => removeArrayItem('agenda', index)}
                                 className="text-red-600 hover:text-red-700 p-1"
@@ -1568,7 +1649,7 @@ export default function NewEventPage() {
                     {/* Basic Information */}
                     <div className="bg-gray-50 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h3>
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <span className="text-sm text-gray-600">Title: *</span>
                           <p className={`font-medium ${!formData.title.trim() ? 'text-red-600' : ''}`}>
@@ -1593,7 +1674,7 @@ export default function NewEventPage() {
                     {/* Schedule & Location */}
                     <div className="bg-gray-50 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">Schedule & Location</h3>
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <span className="text-sm text-gray-600">Date: *</span>
                           <p className={`font-medium ${!formData.date ? 'text-red-600' : ''}`}>
@@ -1618,7 +1699,7 @@ export default function NewEventPage() {
                     {/* Registration */}
                     <div className="bg-gray-50 rounded-lg p-6">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">Registration</h3>
-                      <div className="grid md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <span className="text-sm text-gray-600">Max Attendees:</span>
                           <p className="font-medium">{formData.maxAttendees}</p>
@@ -1661,17 +1742,17 @@ export default function NewEventPage() {
 
                     {/* Final Actions */}
                     <div className="border-t pt-6">
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                         <div>
                           <h3 className="text-lg font-semibold text-gray-900">Ready to Create Event?</h3>
                           <p className="text-sm text-gray-600">
                             Review all information above and click &quot;Create Event&quot; when ready.
                           </p>
                         </div>
-                        <div className="flex space-x-3">
+                        <div className="flex flex-col sm:flex-row gap-3">
                           <button
                             onClick={() => setPreviewMode(true)}
-                            className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center"
+                            className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center"
                           >
                             <Eye className="h-4 w-4 mr-2" />
                             Preview
@@ -1679,7 +1760,7 @@ export default function NewEventPage() {
                           <button
                             onClick={handleSave}
                             disabled={isSaving}
-                            className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center disabled:opacity-50"
+                            className="w-full sm:w-auto bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center disabled:opacity-50"
                           >
                             <CheckCircle className="h-4 w-4 mr-2" />
                             {isSaving ? 'Creating...' : 'Create Event'}
@@ -1690,21 +1771,24 @@ export default function NewEventPage() {
                   </div>
                 </div>
               )}
-              <div className="px-8 py-6 bg-gray-50 border-t flex justify-between">
-                <button
-                  onClick={prevStep}
-                  disabled={currentStep === 1}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={nextStep}
-                  disabled={currentStep === 6}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {currentStep === 6 ? 'Complete' : 'Next'}
-                </button>
+              {/* Navigation Buttons */}
+              <div className="px-4 sm:px-6 lg:px-8 py-4 sm:py-6 bg-gray-50 border-t">
+                <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-0">
+                  <button
+                    onClick={prevStep}
+                    disabled={currentStep === 1}
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed order-2 sm:order-1"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={nextStep}
+                    disabled={currentStep === 6}
+                    className="w-full sm:w-auto bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed order-1 sm:order-2"
+                  >
+                    {currentStep === 6 ? 'Complete' : 'Next'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
