@@ -21,6 +21,14 @@ export default function ChatInterface() {
     scrollToBottom();
   }, [messages]);
 
+  // Check for stored name on component mount
+  useEffect(() => {
+    const storedName = localStorage.getItem('flamingo-chat-username');
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, []);
+
   useEffect(() => {
     // Animation and initial conversation setup
     const timer = setTimeout(() => {
@@ -37,17 +45,33 @@ export default function ChatInterface() {
       
       setMessages([welcomeMessage]);
       
-      // Add name request after a delay
-      setTimeout(() => {
-        const nameRequest: ChatMessage = {
-          id: 'name-request',
-          content: `I'd love to get to know you better - what's your name, lovely? 😊 I'm here to help with anything you need!`,
-          role: 'assistant',
-          timestamp: new Date(),
-          sessionId: ''
-        };
-        setMessages(prev => [...prev, nameRequest]);
-      }, 2000);
+      // Check if we have a stored name
+      const storedName = localStorage.getItem('flamingo-chat-username');
+      if (storedName) {
+        // Greet returning user by name
+        setTimeout(() => {
+          const returnGreeting: ChatMessage = {
+            id: 'return-greeting',
+            content: `Welcome back, ${storedName}! 🌸 It's wonderful to see you again! What would you like to know about today? 💚`,
+            role: 'assistant',
+            timestamp: new Date(),
+            sessionId: ''
+          };
+          setMessages(prev => [...prev, returnGreeting]);
+        }, 2000);
+      } else {
+        // Ask for name from new user
+        setTimeout(() => {
+          const nameRequest: ChatMessage = {
+            id: 'name-request',
+            content: `I'd love to get to know you better - what's your name, lovely? 😊`,
+            role: 'assistant',
+            timestamp: new Date(),
+            sessionId: ''
+          };
+          setMessages(prev => [...prev, nameRequest]);
+        }, 2000);
+      }
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -68,14 +92,17 @@ export default function ChatInterface() {
     
     // Check if this is the first user message (likely their name)
     if (!userName && messages.length <= 2) {
-      setUserName(inputMessage.trim());
+      const newUserName = inputMessage.trim();
+      setUserName(newUserName);
+      // Save name to local storage
+      localStorage.setItem('flamingo-chat-username', newUserName);
       setInputMessage('');
       
-      // Add personalized greeting
+      // Add personalized greeting - shorter and direct
       setTimeout(() => {
         const personalGreeting: ChatMessage = {
           id: 'personal-greeting',
-          content: `What a beautiful name, ${inputMessage.trim()}! � I'm so happy to meet you! I'm here to chat about our wonderful environmental programs, upcoming events, volunteer opportunities, or anything else you'd like to know about FLAMINGO CHAP CHAP CBO. What would you like to explore today? 💚`,
+          content: `What a beautiful name, ${newUserName}! 🌸 I'm so happy to meet you! What would you like to know about today? 💚`,
           role: 'assistant',
           timestamp: new Date(),
           sessionId: sessionId
@@ -114,7 +141,7 @@ export default function ChatInterface() {
       console.error('Error sending message:', error);
       const errorMessage: ChatMessage = {
         id: Date.now().toString(),
-        content: 'Oh dear! I seem to be having a little technical hiccup 😅 Could you try again in a moment? If it keeps happening, feel free to reach out directly at info@flamingochapchap.org - I promise someone wonderful will help you!',
+        content: 'Oh dear! I seem to be having a little technical hiccup 😅 Could you try again in a moment? If it keeps happening, feel free to reach out directly at info@flamingochapchap.org or call our secretary at +254722113087 - I promise someone wonderful will help you!',
         role: 'assistant',
         timestamp: new Date(),
         sessionId: sessionId
