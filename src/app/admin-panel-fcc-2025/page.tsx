@@ -1,4 +1,4 @@
-import { Calendar, Users, FileText, TrendingUp, Settings, Plus, Edit, Eye, BarChart3, MessageCircle } from 'lucide-react';
+import { Calendar, Users, FileText, TrendingUp, Settings, Plus, Edit, Eye, BarChart3, MessageCircle, DollarSign } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ManagementDashboard() {
@@ -249,7 +249,7 @@ export default function ManagementDashboard() {
         {/* Quick Actions */}
         <div className="mt-8 bg-white rounded-lg shadow p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <Link 
               href="/admin-panel-fcc-2025/events/new"
               className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors text-center"
@@ -264,6 +264,14 @@ export default function ManagementDashboard() {
             >
               <Users className="h-8 w-8 text-gray-400 mx-auto mb-2" />
               <p className="text-sm font-medium text-gray-700">Add New Member</p>
+            </Link>
+
+            <Link 
+              href="/admin-panel-fcc-2025/financial"
+              className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-emerald-500 hover:bg-emerald-50 transition-colors text-center"
+            >
+              <DollarSign className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+              <p className="text-sm font-medium text-gray-700">Financial Management</p>
             </Link>
 
             <Link 
