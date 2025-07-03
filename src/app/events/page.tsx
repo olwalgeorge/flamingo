@@ -102,17 +102,49 @@ export default function Events() {
                   
                   <p className="text-gray-600 mb-4">{event.description}</p>
                   
+                  {/* Funding Progress - Show for events with funding information */}
+                  {event.fundraisingGoal && event.currentFunding !== undefined && (
+                    <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-xs font-medium text-green-700">Funding Progress</span>
+                        <span className="text-xs text-green-600">
+                          {Math.round((event.currentFunding / event.fundraisingGoal) * 100)}% funded
+                        </span>
+                      </div>
+                      <div className="w-full bg-green-200 rounded-full h-2">
+                        <div 
+                          className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${Math.min((event.currentFunding / event.fundraisingGoal) * 100, 100)}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex justify-between text-xs text-green-600 mt-1">
+                        <span>${event.currentFunding.toLocaleString()} raised</span>
+                        <span>${event.fundraisingGoal.toLocaleString()} goal</span>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-gray-500">
                       <Users className="h-4 w-4 mr-1" />
                       <span className="text-sm">{event.attendees} attending</span>
                     </div>
-                    <Link 
-                      href={`/events/${event.id}`}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Join Event
-                    </Link>
+                    <div className="flex space-x-2">
+                      {event.fundraisingGoal && (
+                        <Link 
+                          href={`/events/${event.id}/fundraiser`}
+                          className="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm"
+                        >
+                          Donate
+                        </Link>
+                      )}
+                      <Link 
+                        href={`/events/${event.id}`}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        Join Event
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>

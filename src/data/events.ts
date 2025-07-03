@@ -27,6 +27,21 @@ export interface Event {
   materials?: string[];
   outcomes?: string[];
   prerequisites?: string[];
+  // Financial information for public display
+  estimatedCost?: number;
+  fundraisingGoal?: number;
+  currentFunding?: number;
+  currency?: string;
+  fundingBreakdown?: Array<{
+    category: string;
+    amount: number;
+    description: string;
+  }>;
+  sponsorshipOpportunities?: Array<{
+    level: string;
+    amount: number;
+    benefits: string[];
+  }>;
 }
 
 export const eventsData: Event[] = [
@@ -73,6 +88,23 @@ This event is suitable for all ages and fitness levels. Families are especially 
       { time: "11:00 AM", activity: "Tree Planting Session", details: "Indigenous species along erosion-prone areas" },
       { time: "11:45 AM", activity: "Wrap-up & Data Collection", details: "Waste sorting and environmental data recording" },
       { time: "12:00 PM", activity: "Community Refreshments", details: "Light refreshments and networking" }
+    ],
+    estimatedCost: 2500,
+    fundraisingGoal: 3500,
+    currentFunding: 2800,
+    currency: "USD",
+    fundingBreakdown: [
+      { category: "Equipment & Tools", amount: 800, description: "Cleanup tools, gloves, waste bags" },
+      { category: "Transportation", amount: 600, description: "Community transport and logistics" },
+      { category: "Refreshments", amount: 500, description: "Food and drinks for volunteers" },
+      { category: "Tree Seedlings", amount: 700, description: "Indigenous trees for riverbank restoration" },
+      { category: "Training Materials", amount: 400, description: "Educational resources and certificates" },
+      { category: "Safety Equipment", amount: 500, description: "First aid and safety gear" }
+    ],
+    sponsorshipOpportunities: [
+      { level: "Gold Sponsor", amount: 1000, benefits: ["Logo on all materials", "Recognition at event", "Social media mention"] },
+      { level: "Silver Sponsor", amount: 500, benefits: ["Logo on banners", "Event recognition"] },
+      { level: "Bronze Sponsor", amount: 200, benefits: ["Name mention", "Certificate of appreciation"] }
     ]
   },
   {
@@ -221,7 +253,24 @@ This training is perfect for individuals with limited space but big dreams of gr
     ],
     materials: ["Vegetable seeds", "Small containers", "Organic fertilizer samples", "Irrigation supplies"],
     outcomes: ["Urban farming starter kit", "Business plan template", "Monthly follow-up support"],
-    prerequisites: ["Basic literacy skills", "Access to small growing space"]
+    prerequisites: ["Basic literacy skills", "Access to small growing space"],
+    estimatedCost: 1800,
+    fundraisingGoal: 2200,
+    currentFunding: 1650,
+    currency: "USD",
+    fundingBreakdown: [
+      { category: "Training Materials", amount: 600, description: "Seeds, containers, tools for participants" },
+      { category: "Expert Trainers", amount: 500, description: "Professional agricultural specialists" },
+      { category: "Irrigation Supplies", amount: 400, description: "Drip irrigation systems and equipment" },
+      { category: "Lunch & Refreshments", amount: 300, description: "Farm-to-table meals for participants" },
+      { category: "Follow-up Support", amount: 200, description: "3-month mentorship program" },
+      { category: "Certificates & Resources", amount: 100, description: "Training certificates and guides" }
+    ],
+    sponsorshipOpportunities: [
+      { level: "Training Partner", amount: 800, benefits: ["Co-branding on materials", "Trainer recognition", "Participant database access"] },
+      { level: "Equipment Sponsor", amount: 400, benefits: ["Logo on equipment", "Event mention", "Photo opportunities"] },
+      { level: "Community Supporter", amount: 150, benefits: ["Name on certificates", "Social media recognition"] }
+    ]
   },
   {
     id: "5",
