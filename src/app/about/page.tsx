@@ -1,4 +1,6 @@
 import { Users, Target, Heart } from 'lucide-react';
+import ContactCard from '@/components/ContactCard';
+import { CONTACT_INFO } from '@/data/contactInfo';
 
 export default function About() {
   return (
@@ -8,11 +10,11 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-              About FLAMINGO CHAP CHAP CBO
+              About {CONTACT_INFO.organization.acronym}
             </h1>
             <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-green-100">
-              A values-driven community organization working for environmental conservation, 
-              community empowerment, and sustainable development in Kisumu County, Kenya.
+              {CONTACT_INFO.organization.fullName} - A values-driven community organization working for environmental conservation, 
+              community empowerment, and sustainable development in {CONTACT_INFO.office.county}, {CONTACT_INFO.office.country}.
             </p>
           </div>
         </div>
@@ -210,6 +212,28 @@ export default function About() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership Contact Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Get in Touch with Our Team
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Have questions about our work or want to get involved? Our leadership team is here to help.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <ContactCard 
+              variant="detailed"
+              showBusinessHours={true}
+              showLeadership={true}
+              showDepartments={false}
+            />
           </div>
         </div>
       </section>

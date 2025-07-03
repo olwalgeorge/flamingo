@@ -1,12 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
+import PhoneInput from '@/components/PhoneInput';
+import ContactCard from '@/components/ContactCard';
+import { DepartmentContacts } from '@/components/DepartmentContact';
+import { DEFAULT_COUNTRY_CODE } from '@/utils/countryCodes';
+import { CONTACT_INFO } from '@/data/contactInfo';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
+    phoneCountryCode: DEFAULT_COUNTRY_CODE,
     subject: '',
     message: ''
   });
@@ -16,13 +23,34 @@ export default function Contact() {
     // Handle form submission here
     console.log('Form submitted:', formData);
     alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setFormData({ 
+      name: '', 
+      email: '', 
+      phone: '',
+      phoneCountryCode: DEFAULT_COUNTRY_CODE,
+      subject: '', 
+      message: '' 
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
+    });
+  };
+
+  const handlePhoneChange = (phone: string) => {
+    setFormData({
+      ...formData,
+      phone
+    });
+  };
+
+  const handleCountryCodeChange = (phoneCountryCode: string) => {
+    setFormData({
+      ...formData,
+      phoneCountryCode
     });
   };
 
@@ -33,7 +61,7 @@ export default function Contact() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-              Contact FCC CBO
+              Contact {CONTACT_INFO.organization.acronym}
             </h1>
             <p className="text-xl lg:text-2xl max-w-3xl mx-auto text-blue-100">
               We&apos;d love to hear from you! Whether you have questions about environmental conservation, 
@@ -82,6 +110,20 @@ export default function Contact() {
                       placeholder="your.email@example.com"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <PhoneInput
+                    id="phone"
+                    label="Phone Number (Optional)"
+                    value={formData.phone}
+                    countryCode={formData.phoneCountryCode}
+                    onPhoneChange={handlePhoneChange}
+                    onCountryCodeChange={handleCountryCodeChange}
+                    placeholder="712345678"
+                    required={false}
+                    compact={false}
+                  />
                 </div>
                 
                 <div>
@@ -135,76 +177,36 @@ export default function Contact() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Contact Information</h2>
               
-              <div className="space-y-8">
-                <div className="flex items-start space-x-4">
-                  <div className="bg-green-100 p-3 rounded-lg">
-                    <MapPin className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Visit Us</h3>
-                    <p className="text-gray-600">
-                      Flamingo Unit, Kondele Ward<br />
-                      P.O Box 2340-40100<br />
-                      Kisumu County, Kenya
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-green-100 p-3 rounded-lg">
-                    <Phone className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Call Us</h3>
-                    <p className="text-gray-600">
-                      Main: (555) 123-4567<br />
-                      Emergency: (555) 123-4568
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-purple-100 p-3 rounded-lg">
-                    <Mail className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Us</h3>
-                    <p className="text-gray-600">
-                      General: info@communityconnect.org<br />
-                      Events: events@communityconnect.org<br />
-                      Volunteer: volunteer@communityconnect.org
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="bg-orange-100 p-3 rounded-lg">
-                    <Clock className="h-6 w-6 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2">Office Hours</h3>
-                    <p className="text-gray-600">
-                      Monday - Friday: 9:00 AM - 5:00 PM<br />
-                      Saturday: 10:00 AM - 2:00 PM<br />
-                      Sunday: Closed
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Map Placeholder */}
-              <div className="mt-8">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Find Us</h3>
-                <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-gray-500">
-                    <MapPin className="h-12 w-12 mx-auto mb-2" />
-                    <p>Interactive map would be here</p>
-                    <p className="text-sm">123 Community Street, Your City</p>
-                  </div>
-                </div>
-              </div>
+              <ContactCard 
+                variant="detailed"
+                showBusinessHours={true}
+                showDepartments={false}
+                showLeadership={false}
+              />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Department Contacts Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Department Contacts
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Connect directly with the right department for your specific needs. Each department is 
+              specialized to provide you with the best possible assistance.
+            </p>
+          </div>
+          
+          <DepartmentContacts 
+            variant="detailed"
+            showDescription={true}
+            showResponsibilities={true}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+          />
         </div>
       </section>
 

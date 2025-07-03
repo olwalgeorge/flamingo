@@ -1,75 +1,14 @@
-import { Clock, MapPin, Heart, CheckCircle } from 'lucide-react';
+import { Clock, MapPin, Heart, CheckCircle, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { 
+  getActiveVolunteerPositions, 
+  getPositionsWithDeadlines
+} from '@/data/volunteerPositions';
+import ContactCard from '@/components/ContactCard';
 
 export default function Volunteer() {
-  const volunteerOpportunities = [
-    {
-      id: 1,
-      title: "Community Garden Maintenance",
-      description: "Help maintain our community garden by weeding, watering, and harvesting produce for local food banks.",
-      location: "Central Park Community Garden",
-      duration: "2-4 hours/week",
-      requirements: ["No experience needed", "Willingness to work outdoors", "Basic physical ability"],
-      contact: "garden@communityconnect.org",
-      category: "Environmental",
-      timeCommitment: "Flexible"
-    },
-    {
-      id: 2,
-      title: "Youth Mentorship Program",
-      description: "Mentor young people in our community, helping them with homework, life skills, and career guidance.",
-      location: "Community Center & Schools",
-      duration: "3-5 hours/week",
-      requirements: ["Background check required", "Good communication skills", "Patience with children"],
-      contact: "mentorship@communityconnect.org",
-      category: "Education",
-      timeCommitment: "Regular"
-    },
-    {
-      id: 3,
-      title: "Event Setup & Support",
-      description: "Help set up and run community events, from small workshops to large festivals.",
-      location: "Various event locations",
-      duration: "4-8 hours per event",
-      requirements: ["Physical ability to lift/move items", "Team player attitude", "Reliable transportation"],
-      contact: "events@communityconnect.org",
-      category: "Events",
-      timeCommitment: "As needed"
-    },
-    {
-      id: 4,
-      title: "Senior Companion Program",
-      description: "Provide companionship and assistance to senior community members through visits and activities.",
-      location: "Senior homes & private residences",
-      duration: "2-3 hours/week",
-      requirements: ["Background check required", "Compassionate nature", "Good listening skills"],
-      contact: "seniors@communityconnect.org",
-      category: "Social Services",
-      timeCommitment: "Regular"
-    },
-    {
-      id: 5,
-      title: "Food Distribution Support",
-      description: "Help sort, pack, and distribute food to families in need through our food pantry program.",
-      location: "Community Center Food Pantry",
-      duration: "3-4 hours/week",
-      requirements: ["Ability to lift 25+ lbs", "Attention to detail", "Respectful attitude"],
-      contact: "foodpantry@communityconnect.org",
-      category: "Social Services",
-      timeCommitment: "Flexible"
-    },
-    {
-      id: 6,
-      title: "Digital Literacy Instructor",
-      description: "Teach basic computer and smartphone skills to community members who need technology support.",
-      location: "Public Library & Community Center",
-      duration: "2-3 hours/week",
-      requirements: ["Good technology skills", "Teaching experience preferred", "Patience and empathy"],
-      contact: "digital@communityconnect.org",
-      category: "Education",
-      timeCommitment: "Regular"
-    }
-  ];
+  const volunteerOpportunities = getActiveVolunteerPositions();
+  const upcomingDeadlines = getPositionsWithDeadlines();
 
   const volunteerBenefits = [
     "Meaningful connections with community members",
@@ -86,6 +25,9 @@ export default function Volunteer() {
       case 'Education': return 'bg-blue-100 text-blue-800';
       case 'Events': return 'bg-purple-100 text-purple-800';
       case 'Social Services': return 'bg-orange-100 text-orange-800';
+      case 'Health': return 'bg-red-100 text-red-800';
+      case 'Financial Education': return 'bg-yellow-100 text-yellow-800';
+      case 'Technology': return 'bg-indigo-100 text-indigo-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -97,6 +39,15 @@ export default function Volunteer() {
       case 'As needed': return 'bg-yellow-100 text-yellow-800';
       default: return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const formatDeadline = (deadline: string) => {
+    const date = new Date(deadline);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
   };
 
   return (
@@ -140,6 +91,35 @@ export default function Volunteer() {
         </div>
       </section>
 
+      {/* Urgent Deadlines Alert */}
+      {upcomingDeadlines.length > 0 && (
+        <section className="py-12 bg-amber-50 border-l-4 border-amber-400">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-start space-x-3">
+              <Calendar className="h-6 w-6 text-amber-600 mt-1 flex-shrink-0" />
+              <div>
+                <h3 className="text-lg font-semibold text-amber-800 mb-2">
+                  Application Deadlines Approaching
+                </h3>
+                <div className="space-y-2">
+                  {upcomingDeadlines.slice(0, 3).map((position) => (
+                    <div key={position.id} className="text-amber-700">
+                      <span className="font-medium">{position.title}</span> - 
+                      <span className="ml-1">Deadline: {formatDeadline(position.applicationDeadline!)}</span>
+                    </div>
+                  ))}
+                </div>
+                {upcomingDeadlines.length > 3 && (
+                  <p className="text-amber-600 text-sm mt-2">
+                    And {upcomingDeadlines.length - 3} more positions with upcoming deadlines.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Volunteer Opportunities */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,13 +136,18 @@ export default function Volunteer() {
             {volunteerOpportunities.map((opportunity) => (
               <div key={opportunity.id} className="bg-white rounded-xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-shadow duration-300">
                 <div className="flex items-start justify-between mb-4">
-                  <div>
+                  <div className="flex flex-wrap gap-2">
                     <span className={`px-3 py-1 rounded-full text-sm font-medium ${getCategoryColor(opportunity.category)}`}>
                       {opportunity.category}
                     </span>
-                    <span className={`ml-2 px-3 py-1 rounded-full text-sm font-medium ${getTimeCommitmentColor(opportunity.timeCommitment)}`}>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${getTimeCommitmentColor(opportunity.timeCommitment)}`}>
                       {opportunity.timeCommitment}
                     </span>
+                    {opportunity.applicationDeadline && (
+                      <span className="px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
+                        Deadline: {formatDeadline(opportunity.applicationDeadline)}
+                      </span>
+                    )}
                   </div>
                 </div>
                 
@@ -183,22 +168,46 @@ export default function Volunteer() {
                 <div className="mb-6">
                   <h4 className="text-sm font-semibold text-gray-900 mb-3">Requirements</h4>
                   <ul className="space-y-1">
-                    {opportunity.requirements.map((req, idx) => (
+                    {opportunity.requirements.slice(0, 3).map((req, idx) => (
                       <li key={idx} className="flex items-start text-sm text-gray-600">
                         <CheckCircle className="h-3 w-3 text-green-500 mr-2 mt-1 flex-shrink-0" />
                         {req}
                       </li>
                     ))}
+                    {opportunity.requirements.length > 3 && (
+                      <li className="text-sm text-gray-500 italic">
+                        +{opportunity.requirements.length - 3} more requirements
+                      </li>
+                    )}
                   </ul>
+                </div>
+
+                <div className="mb-6">
+                  <h4 className="text-sm font-semibold text-gray-900 mb-3">Key Skills</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {opportunity.skills.slice(0, 4).map((skill, idx) => (
+                      <span key={idx} className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md">
+                        {skill}
+                      </span>
+                    ))}
+                    {opportunity.skills.length > 4 && (
+                      <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded-md">
+                        +{opportunity.skills.length - 4} more
+                      </span>
+                    )}
+                  </div>
                 </div>
                 
                 <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                   <div className="text-sm text-gray-500">
                     Contact: {opportunity.contact}
                   </div>
-                  <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                  <Link 
+                    href={`/volunteer/apply/${opportunity.id}`}
+                    className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
                     Apply Now
-                  </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -263,6 +272,28 @@ export default function Volunteer() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section for Questions */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              Have Questions About Volunteering?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our team is here to help you find the perfect volunteer opportunity and answer any questions you might have.
+            </p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <ContactCard 
+              variant="compact"
+              showBusinessHours={false}
+              showLeadership={false}
+              showDepartments={false}
+            />
           </div>
         </div>
       </section>

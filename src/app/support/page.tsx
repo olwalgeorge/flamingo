@@ -1,16 +1,18 @@
 import { Metadata } from 'next';
-import { MessageCircle, Phone, Mail, MapPin, Clock, HelpCircle } from 'lucide-react';
+import { MessageCircle, Phone, Mail, MapPin, HelpCircle } from 'lucide-react';
 import ChatInterface from '../../components/CustomerCare/ChatInterface';
+import ContactCard from '@/components/ContactCard';
+import { CONTACT_INFO } from '@/data/contactInfo';
 
 export const metadata: Metadata = {
-  title: 'Customer Support - FLAMINGO CHAP CHAP CBO',
-  description: 'Get help and support for FLAMINGO CHAP CHAP CBO services, events, membership, and volunteering opportunities.',
+  title: `Customer Support - ${CONTACT_INFO.organization.acronym}`,
+  description: `Get help and support for ${CONTACT_INFO.organization.fullName} services, events, membership, and volunteering opportunities.`,
 };
 
 export default function SupportPage() {
   const faqItems = [
     {
-      question: "How can I become a member of FLAMINGO CHAP CHAP CBO?",
+      question: `How can I become a member of ${CONTACT_INFO.organization.acronym}?`,
       answer: "You can become a member by filling out our membership form on the Members page. Membership is open to all individuals who share our mission of environmental conservation and community empowerment."
     },
     {
@@ -26,8 +28,8 @@ export default function SupportPage() {
       answer: "Yes! Visit our Donate page to make a contribution. Your donations help fund our environmental programs, community workshops, and conservation equipment."
     },
     {
-      question: "Where is FLAMINGO CHAP CHAP CBO located?",
-      answer: "We are based in Kisumu County, Kenya, and primarily operate around Lake Victoria and surrounding communities."
+      question: `Where is ${CONTACT_INFO.organization.acronym} located?`,
+      answer: `We are based in ${CONTACT_INFO.office.county}, ${CONTACT_INFO.office.country}, and primarily operate around Lake Victoria and surrounding communities.`
     },
     {
       question: "How can I stay updated on your activities?",
@@ -67,43 +69,12 @@ export default function SupportPage() {
           {/* Contact Information & FAQ */}
           <div className="space-y-8">
             {/* Contact Info */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                <Phone className="mr-3 text-green-600" />
-                Contact Information
-              </h2>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <Mail className="text-green-600 mt-1" size={20} />
-                  <div>
-                    <h3 className="font-medium text-gray-800">Email</h3>
-                    <p className="text-gray-600">info@flamingochapchap.org</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Phone className="text-green-600 mt-1" size={20} />
-                  <div>
-                    <h3 className="font-medium text-gray-800">Phone</h3>
-                    <p className="text-gray-600">+254 xxx xxx xxx</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <MapPin className="text-green-600 mt-1" size={20} />
-                  <div>
-                    <h3 className="font-medium text-gray-800">Location</h3>
-                    <p className="text-gray-600">Kisumu County, Kenya</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Clock className="text-green-600 mt-1" size={20} />
-                  <div>
-                    <h3 className="font-medium text-gray-800">Office Hours</h3>
-                    <p className="text-gray-600">Monday - Friday: 8:00 AM - 5:00 PM</p>
-                    <p className="text-gray-600">Saturday: 9:00 AM - 2:00 PM</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ContactCard 
+              variant="default"
+              showBusinessHours={true}
+              showDepartments={false}
+              showLeadership={false}
+            />
 
             {/* FAQ */}
             <div className="bg-white rounded-lg shadow-lg p-6">

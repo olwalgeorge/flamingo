@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { v4 as uuidv4 } from 'uuid';
 import { ChatMessage, ChatContextData } from '@/types';
+import { CONTACT_INFO } from '@/data/contactInfo';
 
 // Together.ai client for DeepSeek models
 async function getTogetherClient() {
@@ -88,26 +89,10 @@ const getOrganizationContext = (): ChatContextData => ({
       }
     ]
   },
-  leadership: [
-    {
-      name: 'Samuel Weswa Khaukha',
-      position: 'Chairman',
-      role: 'Leading environmental conservation and community development vision'
-    },
-    {
-      name: 'George Omondi Olwal',
-      position: 'General Secretary',
-      role: 'Managing records, correspondence, and program communication'
-    },
-    {
-      name: 'Len Chelimo Koskei',
-      position: 'Treasurer', 
-      role: 'Financial management, transparency, and accountability'
-    }
-  ],
+  leadership: CONTACT_INFO.leadership,
   organizationInfo: {
-    name: 'FLAMINGO CHAP CHAP CBO',
-    fullName: 'FLAMINGO Community-Based Organization',
+    name: CONTACT_INFO.organization.name,
+    fullName: CONTACT_INFO.organization.fullName,
     establishedYear: 2020,
     registrationStatus: 'Registered Community-Based Organization',
     mission: 'We strive for better environmental management, community empowerment, and livelihood improvement using tree planting, urban farming practices, waste management, and recycling activities as an entry point. To advocate for environmental preservation and provision of safe drinkable, fishable and swimmable water to communities around the shores of River Kibos and River Auji and Kisumu County at large.',
@@ -159,10 +144,10 @@ const getOrganizationContext = (): ChatContextData => ({
       'Community partnerships with local government'
     ],
     contactInfo: {
-      email: 'info@flamingochapchap.org',
-      phone: '+254722113087',
-      address: 'Kisumu County, Kenya',
-      operatingAreas: ['Kondele Ward', 'Kisumu Central', 'River Kibos Watershed', 'River Auji Basin']
+      email: CONTACT_INFO.primaryContact.email,
+      phone: CONTACT_INFO.primaryContact.phone,
+      address: `${CONTACT_INFO.office.address}, ${CONTACT_INFO.office.city}, ${CONTACT_INFO.office.county}`,
+      operatingAreas: CONTACT_INFO.operatingAreas
     }
   }
 });

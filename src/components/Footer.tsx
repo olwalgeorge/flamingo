@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { CONTACT_INFO, getMainContactPhone, getMainContactEmail } from '@/data/contactInfo';
 
 export default function Footer() {
   return (
@@ -12,13 +13,13 @@ export default function Footer() {
               <Heart className="h-8 w-8 text-white" />
             </div>
             <span className="text-2xl font-bold">
-              FLAMINGO
-              <span className="text-green-400"> CHAP CHAP</span>
+              {CONTACT_INFO.organization.name.split(' ')[0]}
+              <span className="text-green-400"> {CONTACT_INFO.organization.name.split(' ').slice(1).join(' ')}</span>
             </span>
           </Link>
           <p className="text-gray-300 mb-6 max-w-md">
-            A values-driven organization working for environmental conservation, community empowerment, 
-            and sustainable development in Kisumu County, Kenya.
+            {CONTACT_INFO.organization.fullName} - A values-driven organization working for environmental conservation, community empowerment, 
+            and sustainable development in {CONTACT_INFO.office.county}, {CONTACT_INFO.office.country}.
           </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
@@ -53,17 +54,29 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
             <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-green-400" />
-                <span className="text-gray-300">Flamingo Unit, Kondele Ward, P.O Box 2340-40100, Kisumu County, Kenya</span>
+              <div className="flex items-start space-x-3">
+                <MapPin className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+                <span className="text-gray-300 text-sm">
+                  {CONTACT_INFO.office.address}, {CONTACT_INFO.office.postalAddress}, {CONTACT_INFO.office.city}, {CONTACT_INFO.office.county}, {CONTACT_INFO.office.country}
+                </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-green-400" />
-                <span className="text-gray-300">Contact via local office</span>
+                <a 
+                  href={`tel:${getMainContactPhone()}`}
+                  className="text-gray-300 hover:text-green-400 transition-colors"
+                >
+                  {getMainContactPhone()}
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-green-400" />
-                <span className="text-gray-300">info@flamingochapchap.org</span>
+                <a 
+                  href={`mailto:${getMainContactEmail()}`}
+                  className="text-gray-300 hover:text-green-400 transition-colors"
+                >
+                  {getMainContactEmail()}
+                </a>
               </div>
             </div>
           </div>
@@ -71,7 +84,7 @@ export default function Footer() {
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2025 FLAMINGO CHAP CHAP Community Based Organisation. All rights reserved. Made with ❤️ for environmental conservation and community empowerment.
+            © 2025 {CONTACT_INFO.organization.fullName}. All rights reserved. Made with ❤️ for environmental conservation and community empowerment.
           </p>
         </div>
       </div>
