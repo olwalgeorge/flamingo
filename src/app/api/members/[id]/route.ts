@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { MemberService } from '@/services/memberService';
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
   try {
-    const result = await MemberService.getMemberById(params.id);
+    const result = await MemberService.getMemberById(id);
     
     if (!result.success) {
       return NextResponse.json(result, { status: 404 });
@@ -26,10 +24,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
   try {
     const updateData = await request.json();
-    const result = await MemberService.updateMember(params.id, updateData);
+    const result = await MemberService.updateMember(id, updateData);
     
     if (!result.success) {
       return NextResponse.json(result, { status: result.error === 'Member not found' ? 404 : 400 });
@@ -46,9 +48,13 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
   try {
-    const result = await MemberService.deleteMember(params.id);
+    const result = await MemberService.deleteMember(id);
     
     if (!result.success) {
       return NextResponse.json(result, { status: 404 });
