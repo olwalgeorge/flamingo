@@ -1,14 +1,3 @@
-export interface Member {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  joinDate: string;
-  avatar: string;
-  skills: string[];
-  bio: string;
-}
-
 export interface Event {
   id: string;
   title: string;
@@ -188,7 +177,7 @@ export interface EventBudget {
     amount: number;
     purpose: string;
   };
-  approvalStatus: 'draft' | 'pending' | 'approved' | 'rejected';
+  approvalStatus: 'draft' | 'pending' | 'approved' | 'rejected' | 'amended';
   createdBy: string;
   createdDate: Date;
   approvedBy?: string;
@@ -289,3 +278,357 @@ export interface FinancialReport {
     recommendation?: string;
   }[];
 }
+
+// Member Flow Types - Enhanced for Community Organization
+export interface Member {
+  id: string;
+  membershipNumber?: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  phoneCountryCode: string;
+  
+  // Membership Information
+  membershipType: 'ordinary' | 'patron' | 'honorary' | 'student' | 'senior' | 'corporate';
+  membershipCategory: 'individual' | 'family' | 'corporate' | 'institutional';
+  applicationDate: string;
+  approvalDate?: string;
+  joinDate: string;
+  
+  // Status and Lifecycle
+  status: 'pending' | 'approved' | 'active' | 'inactive' | 'suspended' | 'expelled' | 'resigned' | 'deceased';
+  substatus?: 'probation' | 'grace-period' | 'renewal-due' | 'payment-overdue';
+  statusReason?: string;
+  
+  // Personal Information
+  dateOfBirth?: string;
+  gender?: 'male' | 'female' | 'other';
+  nationality?: string;
+  idNumber?: string;
+  address?: Address;
+  
+  // Professional Information
+  occupation?: string;
+  employer?: string;
+  education?: string;
+  skills: string[];
+  interests: string[];
+  
+  // Participation
+  committees?: string[];
+  eventsAttended?: string[];
+  volunteerHours?: number;
+  
+  // Financial
+  currentFeeStatus: 'paid' | 'pending' | 'overdue' | 'exempt';
+  membershipFees?: MembershipFee[];
+  
+  // Contact
+  emergencyContact: EmergencyContact;
+  communicationPreferences: CommunicationPreferences;
+  
+  // Profile
+  avatar: string;
+  bio: string;
+  profileImage?: string;
+  role: string;
+  
+  // Admin
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Address {
+  street?: string;
+  city?: string;
+  county?: string;
+  country?: string;
+  postalCode?: string;
+}
+
+export interface EmergencyContact {
+  name: string;
+  relationship: string;
+  phone: string;
+  phoneCountryCode: string;
+  email?: string;
+}
+
+export interface MembershipFee {
+  amount: number;
+  currency: string;
+  paymentDate: string;
+  paymentMethod: string;
+  receiptNumber?: string;
+  validUntil: string;
+}
+
+export interface CommunicationPreferences {
+  email: boolean;
+  sms: boolean;
+  whatsapp: boolean;
+  newsletter: boolean;
+  eventUpdates: boolean;
+}
+
+// Membership Application Types
+export interface MembershipApplication {
+  id: string;
+  applicationNumber: string;
+  applicationDate: string;
+  applicantType: 'individual' | 'family' | 'corporate' | 'institutional';
+  
+  // Applicant Information
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  phoneCountryCode: string;
+  dateOfBirth?: string;
+  gender?: 'male' | 'female' | 'other';
+  address: Address;
+  
+  // Membership Details
+  requestedMembershipType: 'ordinary' | 'patron' | 'honorary' | 'student' | 'senior' | 'corporate';
+  requestedMembershipCategory: 'individual' | 'family' | 'corporate' | 'institutional';
+  reasonForJoining: string;
+  howDidYouHear: string;
+  
+  // Professional Information
+  occupation?: string;
+  employer?: string;
+  education?: string;
+  skills: string[];
+  interests: string[];
+  
+  // Application Status
+  status: 'submitted' | 'under-review' | 'approved' | 'rejected' | 'withdrawn' | 'expired';
+  substatus?: 'awaiting-documents' | 'awaiting-references' | 'awaiting-payment' | 'awaiting-interview';
+  
+  // Review Process
+  reviews: ApplicationReview[];
+  finalDecision?: 'approve' | 'reject';
+  finalDecisionDate?: string;
+  
+  // Documents and References
+  documents: ApplicationDocument[];
+  references: ApplicationReference[];
+  
+  // Emergency Contact
+  emergencyContact: EmergencyContact;
+  communicationPreferences: CommunicationPreferences;
+  
+  // Interview
+  interviewScheduled?: string;
+  interviewNotes?: string;
+  interviewScore?: number;
+  
+  // Payment
+  membershipFeeAmount?: number;
+  membershipFeePaid?: boolean;
+  membershipFeePaymentDate?: string;
+  
+  // Conversion
+  convertedToMember?: boolean;
+  memberId?: string;
+  conversionDate?: string;
+  
+  // Admin
+  assignedReviewer?: string;
+  internalNotes?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ApplicationReview {
+  id: string;
+  reviewedBy: string;
+  reviewDate: string;
+  decision: 'approve' | 'reject' | 'pending' | 'request-more-info';
+  comments?: string;
+  score?: number;
+  criteria?: {
+    eligibility: boolean;
+    documentation: boolean;
+    references: boolean;
+    interview: boolean;
+    background: boolean;
+  };
+}
+
+export interface ApplicationDocument {
+  id: string;
+  type: 'id-copy' | 'photo' | 'certificate' | 'recommendation' | 'other';
+  filename: string;
+  url: string;
+  uploadDate: string;
+  verified: boolean;
+  verifiedBy?: string;
+  verifiedDate?: string;
+}
+
+export interface ApplicationReference {
+  name: string;
+  relationship: string;
+  phone: string;
+  email?: string;
+  organization?: string;
+  contactedDate?: string;
+  response?: 'positive' | 'negative' | 'neutral' | 'no-response';
+  notes?: string;
+}
+
+// Membership Action Types
+export interface MembershipAction {
+  id: string;
+  member: string;
+  actionType: 'approval' | 'suspension' | 'reinstatement' | 'expulsion' | 'resignation' | 'renewal' | 'fee-payment' | 'warning' | 'probation' | 'status-change' | 'other';
+  actionDate: string;
+  actionBy: string;
+  
+  // Action Details
+  reason: string;
+  description?: string;
+  previousStatus?: string;
+  newStatus?: string;
+  
+  // Specific Action Details
+  suspensionDuration?: number;
+  suspensionEndDate?: string;
+  probationDuration?: number;
+  probationEndDate?: string;
+  warningLevel?: 'verbal' | 'written' | 'final';
+  feeAmount?: number;
+  feeCurrency?: string;
+  
+  // Status and Appeals
+  status: 'pending' | 'active' | 'completed' | 'cancelled' | 'expired' | 'appealed';
+  canBeAppealed?: boolean;
+  appealDeadline?: string;
+  appealSubmitted?: boolean;
+  appealDecision?: 'upheld' | 'overturned' | 'modified';
+  
+  // Follow-up
+  followUpRequired?: boolean;
+  followUpDate?: string;
+  followUpCompleted?: boolean;
+  
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Committee Types
+export interface Committee {
+  id: string;
+  name: string;
+  code: string;
+  description: string;
+  type: 'standing' | 'ad-hoc' | 'sub-committee' | 'working-group';
+  category: 'governance' | 'finance' | 'programs' | 'events' | 'membership' | 'communications' | 'other';
+  
+  // Structure
+  parentCommittee?: string;
+  subCommittees?: string[];
+  
+  // Members
+  members: CommitteeMember[];
+  maxMembers?: number;
+  minMembers?: number;
+  quorum?: number;
+  
+  // Terms and Meetings
+  termDuration?: number;
+  termStartDate?: string;
+  termEndDate?: string;
+  meetingFrequency: 'weekly' | 'bi-weekly' | 'monthly' | 'quarterly' | 'bi-annually' | 'annually' | 'as-needed';
+  meetingDay?: string;
+  meetingTime?: string;
+  meetingVenue?: string;
+  nextMeetingDate?: string;
+  
+  // Meetings
+  meetings: CommitteeMeeting[];
+  
+  // Mandate
+  mandate: string;
+  responsibilities: string[];
+  authority: string[];
+  
+  // Budget
+  annualBudget?: number;
+  budgetCurrency?: string;
+  allocatedFunds?: number;
+  spentFunds?: number;
+  
+  // Status
+  status: 'active' | 'inactive' | 'dissolved' | 'suspended';
+  establishedDate: string;
+  
+  // Performance
+  performanceMetrics?: CommitteePerformance;
+  
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CommitteeMember {
+  member: string;
+  memberName?: string;
+  position: 'chairperson' | 'vice-chairperson' | 'secretary' | 'treasurer' | 'member' | 'observer';
+  joinDate: string;
+  endDate?: string;
+  isActive: boolean;
+  responsibilities?: string[];
+}
+
+export interface CommitteeMeeting {
+  id: string;
+  meetingNumber: number;
+  meetingDate: string;
+  meetingType: 'regular' | 'special' | 'emergency' | 'annual';
+  venue: string;
+  agenda: string[];
+  attendees: MeetingAttendee[];
+  decisions: string[];
+  actionItems: ActionItem[];
+  minutesDocumentUrl?: string;
+  nextMeetingDate?: string;
+}
+
+export interface MeetingAttendee {
+  member: string;
+  memberName?: string;
+  attended: boolean;
+  apologies: boolean;
+  role?: string;
+}
+
+export interface ActionItem {
+  id: string;
+  description: string;
+  assignedTo: string;
+  assignedToName?: string;
+  dueDate: string;
+  status: 'pending' | 'in-progress' | 'completed' | 'overdue';
+  completedDate?: string;
+}
+
+export interface CommitteePerformance {
+  meetingsScheduled: number;
+  meetingsHeld: number;
+  averageAttendance: number;
+  decisionsExecuted: number;
+  actionItemsCompleted: number;
+}
+
+// Type exports for service layer
+export type MembershipStatus = 'active' | 'inactive' | 'suspended' | 'expelled' | 'resigned' | 'pending';
+export type MembershipType = 'ordinary' | 'patron' | 'honorary' | 'student' | 'senior' | 'corporate';
+export type MembershipCategory = 'regular' | 'new' | 'renewal' | 'senior' | 'student' | 'family' | 'corporate' | 'institutional';
+export type ApplicationStatus = 'pending' | 'under_review' | 'approved' | 'rejected' | 'withdrawn' | 'expired' | 'converted';
+export type ActionType = 'approval' | 'suspension' | 'reinstatement' | 'expulsion' | 'resignation' | 'renewal' | 'fee_payment' | 'warning' | 'probation' | 'status_change' | 'committee_assignment' | 'committee_removal' | 'membership_approval' | 'activation' | 'other';
+export type CommitteeRole = 'chair' | 'vice-chair' | 'secretary' | 'treasurer' | 'member' | 'advisor' | 'observer';
+export type CommitteeStatus = 'active' | 'inactive' | 'suspended' | 'dissolved';
+export type CommitteeType = 'standing' | 'ad-hoc' | 'sub-committee' | 'working-group';
