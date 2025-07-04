@@ -310,9 +310,7 @@ adminSchema.methods.incLoginAttempts = function() {
   return this.updateOne(updates);
 };
 
-// Add indexes
-adminSchema.index({ email: 1 });
-adminSchema.index({ username: 1 });
+// Add indexes (email and username already have unique indexes)
 adminSchema.index({ role: 1, isActive: 1 });
 adminSchema.index({ department: 1 });
 adminSchema.index({ lastLogin: -1 });

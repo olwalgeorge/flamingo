@@ -99,13 +99,12 @@ const donationSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-// Add indexes for better query performance
+// Add indexes for better query performance (receiptNumber already has unique index)
 donationSchema.index({ 'donor.email': 1 });
 donationSchema.index({ status: 1, createdAt: -1 });
 donationSchema.index({ purpose: 1 });
 donationSchema.index({ event: 1 });
 donationSchema.index({ donationType: 1 });
-donationSchema.index({ receiptNumber: 1 });
 
 // Pre-save middleware to generate receipt number
 donationSchema.pre('save', async function(next) {

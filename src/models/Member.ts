@@ -68,8 +68,7 @@ const memberSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-// Add indexes for better query performance
-memberSchema.index({ email: 1 });
+// Add indexes for better query performance (email already has unique index)
 memberSchema.index({ membershipType: 1, status: 1 });
 memberSchema.index({ joinDate: -1 });
 

@@ -275,9 +275,8 @@ const organizationSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-// Add indexes
+// Add indexes (registrationNumber already has unique index)
 organizationSchema.index({ name: 1 });
-organizationSchema.index({ registrationNumber: 1 });
 organizationSchema.index({ 'contact.email': 1 });
 
 export const Organization = mongoose.models.Organization || mongoose.model<IOrganization>('Organization', organizationSchema);
