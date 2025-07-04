@@ -1,0 +1,17 @@
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "phone": "+254712345678",
+  "phoneCountryCode": "+254",
+  "membershipType": "ordinary",
+  "skills": ["Environmental Conservation", "Community Organizing"],
+  "interests": ["Sustainable Development", "Climate Action"],
+  "address": {
+    "city": "Nairobi",
+    "county": "Nairobi",
+    "country": "Kenya"
+  },
+  "occupation": "Environmental Scientist",
+  "education": "Masters in Environmental Science"
+}

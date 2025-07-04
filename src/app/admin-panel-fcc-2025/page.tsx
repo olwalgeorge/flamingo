@@ -1,7 +1,53 @@
-import { Calendar, Users, FileText, TrendingUp, Settings, Plus, Edit, Eye, BarChart3, MessageCircle, DollarSign } from 'lucide-react';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Calendar, Users, FileText, TrendingUp, Settings, Plus, Edit, Eye, BarChart3, MessageCircle, DollarSign, LogOut, User } from 'lucide-react';
 import Link from 'next/link';
 
+interface AdminData {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  username: string;
+  role: string;
+  department: string;
+  title?: string;
+}
+
 export default function ManagementDashboard() {
+  const [admin, setAdmin] = useState<AdminData | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    // Get admin data from localStorage
+    const adminData = localStorage.getItem('admin');
+    if (adminData) {
+      try {
+        setAdmin(JSON.parse(adminData));
+      } catch (error) {
+        console.error('Error parsing admin data:', error);
+        router.push('/admin-panel-fcc-2025/login');
+      }
+    } else {
+      router.push('/admin-panel-fcc-2025/login');
+    }
+  }, [router]);
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', { method: 'POST' });
+      localStorage.removeItem('admin');
+      router.push('/admin-panel-fcc-2025/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+      // Force logout even if API call fails
+      localStorage.removeItem('admin');
+      router.push('/admin-panel-fcc-2025/login');
+    }
+  };
+
   // Mock data - in a real app, this would come from a database
   const stats = {
     totalEvents: 6,
@@ -35,11 +81,36 @@ export default function ManagementDashboard() {
               <span className="ml-3 px-2 py-1 bg-red-100 text-red-800 text-xs font-medium rounded">Admin Only</span>
             </div>
             <div className="flex items-center space-x-4">
-              <Link href="/" className="text-gray-600 hover:text-gray-900">
+              {admin && (
+                <div className="flex items-center space-x-3">
+                  <Link 
+                    href="/admin-panel-fcc-2025/profile"
+                    className="flex items-center space-x-2 text-gray-600 hover:text-gray-900"
+                    title="View Profile"
+                  >
+                    <User className="h-5 w-5" />
+                    <span className="text-sm">
+                      {admin.firstName} {admin.lastName}
+                    </span>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded">
+                      {admin.role}
+                    </span>
+                  </Link>
+                  <div className="h-4 border-l border-gray-300"></div>
+                </div>
+              )}
+              <Link href="/" className="text-gray-600 hover:text-gray-900" title="View Site">
                 <Eye className="h-5 w-5" />
               </Link>
-              <button className="text-gray-600 hover:text-gray-900">
+              <button className="text-gray-600 hover:text-gray-900" title="Settings">
                 <Settings className="h-5 w-5" />
+              </button>
+              <button 
+                onClick={handleLogout}
+                className="text-gray-600 hover:text-red-600 transition-colors"
+                title="Logout"
+              >
+                <LogOut className="h-5 w-5" />
               </button>
             </div>
           </div>
