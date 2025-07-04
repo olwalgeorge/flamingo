@@ -17,10 +17,10 @@ npm install mongoose
 The MongoDB connection string is configured in `.env.local`:
 
 ```bash
-MONGODB_URI=mongodb+srv://olwalgeorge:Elixier%402007@cluster0.wncfx.mongodb.net/flamingo
+MONGODB_URI=your_mongodb_connection_string_here
 ```
 
-**Note**: Special characters in passwords (like `@`) must be URL-encoded (`@` becomes `%40`).
+**Note**: Replace `your_mongodb_connection_string_here` with your actual MongoDB Atlas connection string. Special characters in passwords (like `@`) must be URL-encoded (`@` becomes `%40`).
 
 ### 3. Database Connection
 

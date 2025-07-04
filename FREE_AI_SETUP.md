@@ -4,7 +4,9 @@
 
 Your chat is now using Together.ai with the DeepSeek model - great choice for cost-effective, high-quality responses!
 
-**API Key**: `619522b9115eb6e8c4055e695b7f1055541badfdca900d97ed2152020cc8c01a` ✅
+**API Key**: `[YOUR_TOGETHER_API_KEY_HERE]` ✅
+
+**Note**: Replace `[YOUR_TOGETHER_API_KEY_HERE]` with your actual Together.ai API key in your `.env.local` file.
 
 ### Provider Priority:
 
