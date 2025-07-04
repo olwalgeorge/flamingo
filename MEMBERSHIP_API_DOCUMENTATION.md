@@ -1,9 +1,11 @@
 # Flamingo Community Organization - Comprehensive Membership Management API
 
 ## Overview
+
 This API provides comprehensive membership management capabilities for community-based organizations, including full membership lifecycle management, application workflows, committee coordination, and audit trails.
 
 ## Core Features
+
 - **Membership Lifecycle Management**: Application → Review → Approval → Active → Status Changes → Resignation/Expulsion
 - **Application Workflow**: Submit → Review → Interview → Payment → Conversion to Member
 - **Committee Management**: Create committees, assign members, track participation
@@ -16,9 +18,11 @@ This API provides comprehensive membership management capabilities for community
 ### 1. Member Management
 
 #### GET /api/members
+
 Get all members with filtering and pagination.
 
 **Query Parameters:**
+
 - `page` (number): Page number (default: 1)
 - `limit` (number): Items per page (default: 20)
 - `status` (string): Filter by status (active|inactive|suspended|expelled|resigned)
@@ -31,6 +35,7 @@ Get all members with filtering and pagination.
 - `joinDateTo` (date): Filter by join date range
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -47,21 +52,27 @@ Get all members with filtering and pagination.
 ```
 
 #### GET /api/members/{id}
+
 Get member by ID with full details including committees and audit log.
 
 #### PUT /api/members/{id}
+
 Update member information.
 
 #### DELETE /api/members/{id}
+
 Delete member (soft delete with audit trail).
 
 #### GET /api/members/by-membership-number/{membershipNumber}
+
 Get member by membership number.
 
 #### GET /api/members/stats
+
 Get membership statistics.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -84,9 +95,11 @@ Get membership statistics.
 ### 2. Member Status Management
 
 #### PUT /api/members/{id}/status
+
 Update member status with audit trail.
 
 **Request Body:**
+
 ```json
 {
   "status": "suspended",
@@ -100,6 +113,7 @@ Update member status with audit trail.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -114,9 +128,11 @@ Update member status with audit trail.
 ### 3. Membership Applications
 
 #### POST /api/membership/applications
+
 Submit a new membership application.
 
 **Request Body:**
+
 ```json
 {
   "personalInfo": {
@@ -165,19 +181,24 @@ Submit a new membership application.
 ```
 
 #### GET /api/membership/applications
+
 Get all membership applications with filtering.
 
 **Query Parameters:**
+
 - `page`, `limit`: Pagination
 - `status`: Filter by status (pending|under_review|approved|rejected|withdrawn|expired|converted)
 
 #### GET /api/membership/applications/{id}
+
 Get specific application details.
 
 #### PATCH /api/membership/applications/{id}
+
 Review membership application.
 
 **Request Body:**
+
 ```json
 {
   "status": "approved",
@@ -192,9 +213,11 @@ Review membership application.
 ```
 
 #### POST /api/membership/applications/{id}
+
 Convert approved application to member.
 
 **Request Body:**
+
 ```json
 {
   "adminId": "admin123",
@@ -205,9 +228,11 @@ Convert approved application to member.
 ### 4. Membership Actions & Audit Trail
 
 #### GET /api/members/{id}/actions
+
 Get all actions performed on a member.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -235,9 +260,11 @@ Get all actions performed on a member.
 ```
 
 #### POST /api/members/{id}/actions
+
 Create a new membership action.
 
 **Request Body:**
+
 ```json
 {
   "actionType": "warning",
@@ -256,9 +283,11 @@ Create a new membership action.
 ### 5. Committee Management
 
 #### GET /api/committees
+
 Get all active committees with member information.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -297,9 +326,11 @@ Get all active committees with member information.
 ```
 
 #### POST /api/committees
+
 Create a new committee.
 
 **Request Body:**
+
 ```json
 {
   "name": "Events Committee",
@@ -318,9 +349,11 @@ Create a new committee.
 ```
 
 #### POST /api/members/{id}/committees
+
 Add member to committee.
 
 **Request Body:**
+
 ```json
 {
   "committeeId": "committee123",
@@ -331,9 +364,11 @@ Add member to committee.
 ```
 
 #### DELETE /api/members/{id}/committees/{committeeId}
+
 Remove member from committee.
 
 **Request Body:**
+
 ```json
 {
   "adminId": "admin123",
@@ -344,9 +379,11 @@ Remove member from committee.
 ### 6. Member Activity
 
 #### GET /api/members/{id}/activity
+
 Get member's participation history.
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -409,6 +446,7 @@ The system supports the following action types for comprehensive audit tracking:
 ## Member Status Values
 
 ### Primary Status
+
 - `pending`: Application submitted, awaiting review
 - `approved`: Application approved, awaiting conversion
 - `active`: Active member in good standing
@@ -419,6 +457,7 @@ The system supports the following action types for comprehensive audit tracking:
 - `deceased`: Deceased member
 
 ### Sub-Status
+
 - `probation`: Under probationary period
 - `grace-period`: In grace period for renewal
 - `renewal-due`: Renewal required
@@ -437,6 +476,7 @@ All endpoints return standardized error responses:
 ```
 
 Common HTTP status codes:
+
 - `200`: Success
 - `201`: Created
 - `400`: Bad Request
